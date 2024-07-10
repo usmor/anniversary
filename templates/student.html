@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: georgia;
+        font-size: 18px;
+    }
+    .contact-bar {
+        background-color: #54B6B2;
+        color: #000000;
+        text-align: center;
+        padding: 10px 0;
+    }
+</style>
+
+<div class="contact-bar">
+
+    <form action="/student_status" method="POST">
+        <div class="form-group">
+            <label for="q1" style="font-family:georgia">Вы учились в ВШЭ на лингвиста? (помогите с формулировкой)</label>
+            <select class="form-control" name="student_status" id="q1">
+                <option>Да</option>
+                <option>Нет</option>
+            </select>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-secondary"
+             style="background-color: #2F4F4F; font-family:georgia; color:#F9EBC3">Следующая страница</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

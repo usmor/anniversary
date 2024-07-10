@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: georgia;
+        font-size: 18px;
+    }
+    .contact-bar {
+        background-color: #54B6B2;
+        color: #000000;
+        text-align: center;
+        padding: 10px 0;
+    }
+</style>
+
+<div class="contact-bar">
+    <form action="/student_data" method="POST">
+        <br>
+        <h3 style="font-family:georgia"><b>Для студентов</b></h3>
+       <h4 style="font-family:georgia"><b>Бакалавриат</b></h4>
+        <div class="form-group">
+            <label for="b1" style="font-family:georgia">Ваша программа в бакалавриате:</label>
+            <select class="form-control" name="bach_course" id="b1">
+                <option>–</option>
+               <option>ФиКЛ</option>
+               <option>ФиПЛ</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="b2" style="font-family:georgia">Год начала обучения в бакалавриате:</label>
+            <input type="text" class="form-control" name="bach_start" id="b2" placeholder="1900">
+        </div>
+        <div class="form-group">
+            <label for="b3" style="font-family:georgia">Год окончания обучения в бакалавриате:</label>
+            <input type="text" class="form-control" name="bach_end" id="b3" placeholder="1904">
+        </div>
+       <br>
+       <br>
+       <h4 style="font-family:georgia"><b>Магистратура</b></h4>
+        <div class="form-group">
+            <label for="m1" style="font-family:georgia">Ваша программа в магистратуре:</label>
+            <select class="form-control" name="mag_course" id="m1">
+                <option>–</option>
+               <option>Компьютерная лингвистика</option>
+               <option>Цифровые методы в гуманитарных науках</option>
+               <option>Лингвистическая теория и описание языка</option>
+               <option>Русский как иностранный во взаимодействии языков и культур</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="m2" style="font-family:georgia">Год начала обучения в магистратуре:</label>
+            <input type="text" class="form-control" name="mag_start" id="m2" placeholder="1900">
+        </div>
+        <div class="form-group">
+            <label for="m3" style="font-family:georgia">Год окончания обучения в магистратуре:</label>
+            <input type="text" class="form-control" name="mag_end" id="m3" placeholder="1904">
+        </div>
+       <br>
+       <br>
+       <h4 style="font-family:georgia"><b>Аспирантура</b></h4>
+        <div class="form-group">
+            <label for="a1" style="font-family:georgia">Ваша программа в аспирантуре:</label>
+            <select class="form-control" name="asp_course" id="a1">
+                <option>–</option>
+               <option>Компьютерная лингвистика</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="a2" style="font-family:georgia">Год начала обучения в магистратуре:</label>
+            <input type="text" class="form-control" name="asp_start" id="a2" placeholder="1900">
+        </div>
+        <div class="form-group">
+            <label for="a3" style="font-family:georgia">Год окончания обучения в магистратуре:</label>
+            <input type="text" class="form-control" name="asp_end" id="a3" placeholder="1904">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-secondary"
+             style="background-color: #2F4F4F; font-family:georgia; color:#F9EBC3">Следующая страница</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

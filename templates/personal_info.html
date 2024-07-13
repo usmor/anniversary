@@ -9,48 +9,49 @@
         font-size: 18px;
     }
     .contact-bar {
-        background-color: #54B6B2;
+        background-color: #F8F32B;
         color: #000000;
         text-align: center;
         padding: 10px 0;
     }
+    .form-container {
+        background-color: #8D99AE;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px auto;
+        max-width: 1000px;
+    }
+    .form-group {
+        max-width: 400px;
+        margin: 0 auto;
+    }
 </style>
 
 <div class="contact-bar">
-    <form action="/personal_info" method="POST">
-        <br>
-        <h3 style="font-family:georgia"><b>О себе</b></h3>
-        <div class="form-group">
-            <label for="q1" style="font-family:georgia">Фамилия</label>
-            <input type="text" class="form-control" name="surname" id="q1" placeholder="Якобсон">
-        </div>
-        <div class="form-group">
-            <label for="q2" style="font-family:georgia">Имя</label>
-            <input type="text" class="form-control" name="name" id="q2" placeholder="Роман">
-        </div>
-        <div class="form-group">
-            <label for="q3" style="font-family:georgia">Отчество (при наличии)</label>
-            <input type="text" class="form-control" name="second_name" id="q3" placeholder="Осипович">
-        </div>
-<!--        <div class="form-group">-->
-<!--            <label>Кто Вы? И кем Вы были раньше? (помогите с формулировкой)</label>-->
-<!--            <div class="form-check">-->
-<!--                <input class="form-check-input" type="checkbox" id="student" name="status" value="Студент">-->
-<!--                <label class="form-check-label" for="student">Студент</label>-->
-<!--            </div>-->
-<!--            <div class="form-check">-->
-<!--                <input class="form-check-input" type="checkbox" id="employee" name="status" value="Сотрудник">-->
-<!--                <label class="form-check-label" for="employee">Сотрудник</label>-->
-<!--            </div>-->
-<!--            <div class="form-check">-->
-<!--                <input class="form-check-input" type="checkbox" id="friend" name="status" value="Друг">-->
-<!--                <label class="form-check-label" for="friend">Друг</label>-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="text-center">
-            <button type="submit" class="btn btn-secondary"
-             style="background-color: #2F4F4F; font-family:georgia; color:#F9EBC3">Следующая страницы</button>
-        </div>
-    </form>
+    <div class="form-container">
+        <form action="/personal_info" method="POST">
+            <br>
+            <h3 style="font-family:georgia"><b>О себе</b></h3>
+            <div class="form-group">
+                <label for="q1" style="font-family:georgia">Фамилия</label>
+                <input type="text" class="form-control" name="surname" id="q1" placeholder="Якобсон">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="q2" style="font-family:georgia">Имя</label>
+                <input type="text" class="form-control" name="name" id="q2" placeholder="Роман">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="q3" style="font-family:georgia">Отчество (при наличии)</label>
+                <input type="text" class="form-control" name="second_name" id="q3" placeholder="Осипович">
+            </div>
+            <br>
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary"
+                 style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

@@ -4,19 +4,31 @@
 
 {% block content %}
 <style>
-        body {
-            font-family: georgia;
-            font-size: 18px
-        }
-        .contact-bar {
-            background-color: #54B6B2;
-            color: #000000;
-            text-align: center;
-            padding: 10px 0;
-        }
+    body {
+        font-family: georgia;
+        font-size: 18px;
+    }
+    .contact-bar {
+        background-color: #F8F32B;
+        color: #000000;
+        text-align: center;
+        padding: 10px 0;
+    }
+    .form-container {
+        background-color: #8D99AE;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px auto;
+        max-width: 1000px;
+    }
+    .form-group {
+        max-width: 400px;
+        margin: 0 auto;
+    }
 </style>
 
 <div class="contact-bar">
+<div class="form-container">
     <h1 style="font-size: 30px">Наши контакты</h1>
     <br>
     <h2 style="font-size: 20px"><b>Тимлид</b></h2>
@@ -25,7 +37,7 @@
     <h3 style="font-size: 20px"><b>Техническая поддержка сайта</b></h3>
     <p>Дарья Харламова: ссылка на тг с разрешения </p>
     <p>Анна Луценко: <a href="https://t.me/usmor" style="color: #A9DAD9">@usmor</a></p>
-</div>
+</div></div>
 
 {% endblock %}
 

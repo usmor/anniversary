@@ -9,27 +9,39 @@
         font-size: 18px;
     }
     .contact-bar {
-        background-color: #54B6B2;
+        background-color: #F8F32B;
         color: #000000;
         text-align: center;
         padding: 10px 0;
     }
+    .form-container {
+        background-color: #8D99AE;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px auto;
+        max-width: 1000px;
+    }
+    .form-group {
+        max-width: 400px;
+        margin: 0 auto;
+    }
 </style>
 
 <div class="contact-bar">
-
+<div class="form-container">
     <form action="/student_status" method="POST">
         <div class="form-group">
-            <label for="q1" style="font-family:georgia">Вы учились в ВШЭ на лингвиста? (помогите с формулировкой)</label>
+            <label for="q1" style="font-family:georgia">Вы учитесь или учились в Школе Лингвистики?</label>
             <select class="form-control" name="student_status" id="q1">
                 <option>Да</option>
                 <option>Нет</option>
             </select>
         </div>
+        <br>
         <div class="text-center">
             <button type="submit" class="btn btn-secondary"
-             style="background-color: #2F4F4F; font-family:georgia; color:#F9EBC3">Следующая страница</button>
+                 style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
         </div>
     </form>
-</div>
+</div></div>
 {% endblock %}

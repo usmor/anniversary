@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: georgia;
+        font-size: 18px;
+    }
+    .contact-bar {
+        background-color: #F8F32B;
+        color: #000000;
+        text-align: center;
+        padding: 10px 0;
+    }
+    .form-container {
+        background-color: #8D99AE;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px auto;
+        max-width: 1000px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+    .btn {
+        background-color: #2b2d42;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: #3d5a5a;
+    }
+    .section {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #C3CAD5;
+        border: 1px solid #dddddd;
+    }
+    .section + .section {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="contact-bar">
+    <div class="form-container">
+    <form action="/teaching_data" method="POST">
+        <h1 style="font-family:georgia">Преподавание</h1>
+        <div id="sections-container">
+            <div class="section">
+                <div class="form-group">
+                    <label for="teaching_position_1" style="font-family:georgia">Ваша должность:</label>
+                    <select class="form-control" name="teaching_position_1" id="teaching_position_1">
+                        <option>–</option>
+                        <option>ассистет</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject_1" style="font-family:georgia">Название дисциплины:</label>
+                    <input type="text" class="form-control" name="subject_1" id="subject_1" placeholder="Физкультура">
+                </div>
+                <div class="form-group">
+                    <label for="teaching_start_year_1" style="font-family:georgia">Год начала преподавания:</label>
+                    <input type="text" class="form-control" name="teaching_start_year_1" id="teaching_start_year_1" placeholder="1900">
+                </div>
+                <div class="form-group">
+                    <label for="teaching_end_year_1" style="font-family:georgia">Год окончания преподавания:</label>
+                    <input type="text" class="form-control" name="teaching_end_year_1" id="teaching_end_year_1" placeholder="1904">
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
+            <button type="submit" class="btn">Следующая страница</button>
+        </div>
+    </form>
+    <br>
+    </div></div>
+
+<script>
+    let sectionCount = 1;
+
+    function addSection() {
+        sectionCount++;
+        const container = document.getElementById('sections-container');
+        const sectionHTML = `
+            <div class="section">
+                <div class="form-group">
+                    <label for="teaching_position_${sectionCount}" style="font-family:georgia">Ваша должность:</label>
+                    <select class="form-control" name="teaching_position_${sectionCount}" id="teaching_position_${sectionCount}">
+                        <option>–</option>
+                        <option>ассистент</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject_${sectionCount}" style="font-family:georgia">Название дисциплины:</label>
+                    <input type="text" class="form-control" name="subject_${sectionCount}" id="subject_${sectionCount}" placeholder="Физкультура">
+                </div>
+                <div class="form-group">
+                    <label for="teaching_start_year_${sectionCount}" style="font-family:georgia">Год начала преподавания:</label>
+                    <input type="text" class="form-control" name="teaching_start_year_${sectionCount}" id="teaching_start_year_${sectionCount}" placeholder="1900">
+                </div>
+                <div class="form-group">
+                    <label for="teaching_end_year_${sectionCount}" style="font-family:georgia">Год окончания преподавания:</label>
+                    <input type="text" class="form-control" name="teaching_end_year_${sectionCount}" id="teaching_end_year_${sectionCount}" placeholder="1904">
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', sectionHTML);
+    }
+</script>
+{% endblock %}

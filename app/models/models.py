@@ -1,9 +1,4 @@
-from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///smoltest_3.db'
-db = SQLAlchemy(app)
+from app import db
 
 
 class Person(db.Model):
@@ -11,7 +6,10 @@ class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     FIO = db.Column(db.String)
     status = db.relationship('StatusPerson', backref='Person', lazy=True)
-    institution = db.relationship('PersonInstitution', backref='Person', lazy=True)
+    institution = db.relationship(
+        'PersonInstitution',
+        backref='Person',
+        lazy=True)
     event_role = db.relationship('PersonEvent', backref='Person', lazy=True)
 
 
@@ -31,11 +29,12 @@ class StatusPerson(db.Model):
     year_fin = db.Column(db.Integer)
 
 
-class InstitutionType(db.Model): #презабить
+class InstitutionType(db.Model):  # презабить
     __tablename__ = "InstitutionType"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    institutions = db.relationship('Institutions', backref='StatusList', lazy=True)
+    institutions = db.relationship(
+        'Institutions', backref='StatusList', lazy=True)
 
 
 class Institutions(db.Model):
@@ -46,8 +45,14 @@ class Institutions(db.Model):
     description = db.Column(db.String)
     year_start = db.Column(db.Integer)
     year_fin = db.Column(db.Integer)
-    person_link = db.relationship('PersonInstitution', backref='Institutions', lazy=True)
-    event_role = db.relationship('InstitutionEvent', backref='Institutions', lazy=True)
+    person_link = db.relationship(
+        'PersonInstitution',
+        backref='Institutions',
+        lazy=True)
+    event_role = db.relationship(
+        'InstitutionEvent',
+        backref='Institutions',
+        lazy=True)
 
 
 class PersonInstitution(db.Model):
@@ -60,7 +65,7 @@ class PersonInstitution(db.Model):
     position = db.Column(db.String)
 
 
-class EventType(db.Model): #презабить
+class EventType(db.Model):  # презабить
     __tablename__ = "EventType"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -76,22 +81,28 @@ class Event(db.Model):
     description = db.Column(db.String)
     year_start = db.Column(db.Integer)
     year_fin = db.Column(db.Integer)
-    event_person_role = db.relationship('PersonEvent', backref='Event', lazy=True)
-    event_inst_role = db.relationship('InstitutionEvent', backref='Event', lazy=True)
+    event_person_role = db.relationship(
+        'PersonEvent', backref='Event', lazy=True)
+    event_inst_role = db.relationship(
+        'InstitutionEvent', backref='Event', lazy=True)
 
 
 class PersonInEvent(db.Model):
     __tablename__ = "PersonInEvent"
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String)
-    person_in_event = db.relationship('PersonEvent', backref='PersonInEvent', lazy=True)
+    person_in_event = db.relationship(
+        'PersonEvent', backref='PersonInEvent', lazy=True)
 
 
 class InstitutionInEvent(db.Model):
     __tablename__ = "InstitutionInEvent"
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String)
-    inst_in_event = db.relationship('InstitutionEvent', backref='InstitutionInEvent', lazy=True)
+    inst_in_event = db.relationship(
+        'InstitutionEvent',
+        backref='InstitutionInEvent',
+        lazy=True)
 
 
 class PersonEvent(db.Model):
@@ -114,7 +125,10 @@ class DocumentFormat(db.Model):
     __tablename__ = "DocumentFormat"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    documents = db.relationship('Document', backref='DocumentFormat', lazy=True)
+    documents = db.relationship(
+        'Document',
+        backref='DocumentFormat',
+        lazy=True)
 
 
 class DocumentType(db.Model):
@@ -135,7 +149,7 @@ class Document(db.Model):
     link = db.Column(db.String)
 
 
-class PersonDocument(db.Model): ##
+class PersonDocument(db.Model):
     __tablename__ = "PersonDocument"
     id = db.Column(db.Integer, primary_key=True)
     pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"))
@@ -143,7 +157,7 @@ class PersonDocument(db.Model): ##
     role = db.Column(db.String)
 
 
-class InstitutionDocument(db.Model): ##
+class InstitutionDocument(db.Model):
     __tablename__ = "InstitutionDocument"
     id = db.Column(db.Integer, primary_key=True)
     pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"))
@@ -151,7 +165,7 @@ class InstitutionDocument(db.Model): ##
     role = db.Column(db.String)
 
 
-class EventDocument(db.Model): ##
+class EventDocument(db.Model):
     __tablename__ = "EventDocument"
     id = db.Column(db.Integer, primary_key=True)
     ev_id = db.Column(db.Integer, db.ForeignKey("Event.id"))
@@ -261,115 +275,3 @@ class ArtifactDocument(db.Model):
     doc_id = db.Column(db.Integer, db.ForeignKey("Document.id"))
     name = db.Column(db.String)
     description = db.Column(db.String)
-
-
-with app.app_context():
-    db.create_all()
-
-
-@app.route('/')
-def main():
-    return render_template('main.html')
-
-
-@app.route('/form')
-def form():
-    return render_template('personal_info.html')
-
-
-@app.route('/personal_info', methods=['POST'])
-def get_personal_info():
-    surname = request.form.get('surname')
-    name = request.form.get('name')
-    second_name = request.form.get('second_name')
-    full_name = surname + ' ' + name + ' ' + second_name
-    new_person = Person(FIO=full_name)
-    db.session.add(new_person)
-    db.session.commit()
-    global current_person_id
-    current_person_id = new_person.id
-    return render_template('student.html')
-
-
-@app.route('/student_status', methods=['POST'])
-def student():
-    if request.form.get('student_status') == 'Да':
-        new_sp = StatusPerson(stat_id = 1, pers_id = current_person_id, year_start=2020, year_fin=2024)
-        db.session.add(new_sp)
-        db.session.commit()
-        return render_template('student_data.html')
-    elif request.form.get('student_status') == 'Нет':
-        new_sp = StatusPerson(stat_id=0, pers_id=current_person_id, year_start=2020, year_fin=2024)
-        db.session.add(new_sp)
-        db.session.commit()
-        return render_template('employee.html')
-
-
-@app.route('/student_data', methods=['POST'])
-def student_data():
-    if request.form.get('bach_course') != '–':
-        bach_course = request.form.get('bach_course')
-        bach_start = request.form.get('bach_start')
-        bach_end = request.form.get('bach_end')
-
-    if request.form.get('mag_status') != '–':
-        mag_course = request.form.get('mag_course')
-        mag_start = request.form.get('mag_start')
-        mag_end = request.form.get('mag_end')
-
-    if request.form.get('asp_status') != '–':
-        asp_course = request.form.get('asp_course')
-        asp_start = request.form.get('asp_start')
-        asp_end = request.form.get('asp_end')
-
-    return render_template('employee.html')
-
-
-@app.route('/employee_status', methods=['POST'])
-def employee():
-    if request.form.get('employee_status') == 'Да':
-        return render_template('employee_data.html')
-    elif request.form.get('employee_status') == 'Нет':
-        return render_template('non_official_status.html')
-
-
-@app.route('/employee_data', methods=['POST'])
-def employee_data():
-    teacher_status = request.form.get('teacher_status')
-    teacher_start = request.form.get('teacher_start')
-    teacher_end = request.form.get('teacher_end')
-
-    authority_status = request.form.get('authority_status')
-    authority_start = request.form.get('authority_start')
-    authority_end = request.form.get('authority_end')
-
-    laboratories = ['НУЛ по формальным моделям в лингвистике',
-                    'НУЛ социогуманитарных исследований Севера и Арктики']
-    labotaries_data = []
-    for l in range(len(laboratories)):
-        if request.form.get(f'position_in_{l + 1}') is not None:
-            labotaries_data.append([laboratories[l],
-                                    request.form.get(f'position_in_{l + 1}'),
-                                    request.form.get(f'start_{l+1}'),
-                                    request.form.get(f'end_{l+1}')])
-
-    return render_template('non_official_status.html')
-
-@app.route('/non_official_status', methods=['POST'])
-def non_offical_status():
-    # собираем какую-нибудь информацию
-    return render_template('research_papers.html')
-
-@app.route('/research_papers', methods=['POST'])
-def research_papers():
-    research_papers = []
-    # сил понять, как собирать данные, нет
-    return render_template('thanks.html')
-
-@app.route('/contacts')
-def contacts():
-    return render_template('contacts.html')
-
-
-if __name__ == '__main__':
-    app.run(debug=False, port=5001)

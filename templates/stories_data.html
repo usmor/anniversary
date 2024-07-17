@@ -3,15 +3,65 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
 <div class="contact-bar">
     <div class="form-container">
-        <form action="/stories_data" method="POST">
-            <p>спрашиваем про воспоминания</p>
-            <div class="text-center">
+
+    <h2>Выберите действие:</h2>
+    <select id="answerSelect" onchange="showFields()">
+        <option value="none">-</option>
+        <option value="shareNow">Поделюсь сейчас</option>
+        <option value="contactLater">Свяжитесь со мной позже</option>
+    </select>
+
+    <div id="shareNow" class="hidden">
+        <label for="shareText">Ваше воспоминание:</label><br>
+        <textarea id="shareText"></textarea>
+    </div>
+
+    <div id="contactLater" class="hidden">
+        <p>Правильный ли адрес для связи?</p>
+        <input type="checkbox" id="correctAddress"> Да, правильный<br>
+        <div id="newAddress" class="hidden">
+            <label for="newAddressInput">Укажите новый адрес:</label><br>
+            <input type="text" id="newAddressInput">
+        </div>
+    </div>
+        <div class="text-center">
             <button type="submit" class="btn btn-secondary"
                  style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
-            </div>
-    </form>
+        </div>
     </div>
 </div>
+<script>
+function showFields() {
+    var answerSelect = document.getElementById("answerSelect");
+    var shareNow = document.getElementById("shareNow");
+    var contactLater = document.getElementById("contactLater");
+    var newAddress = document.getElementById("newAddress");
+
+    if (answerSelect.value === "shareNow") {
+        shareNow.classList.remove("hidden");
+        contactLater.classList.add("hidden");
+        newAddress.classList.add("hidden");
+    } else if (answerSelect.value === "contactLater") {
+        shareNow.classList.add("hidden");
+        contactLater.classList.remove("hidden");
+    }
+}
+
+document.getElementById("correctAddress").addEventListener("change", function() {
+    var newAddress = document.getElementById("newAddress");
+    if (this.checked) {
+        newAddress.classList.add("hidden");
+    } else {
+        newAddress.classList.remove("hidden");
+    }
+});
+</script>
+
 {% endblock %}

@@ -320,19 +320,19 @@ def important():
 
     important_projects[f'important_project_{section_count}'] = project
 
-    return render_template('memories.html')
+    return render_template('files.html')
 
 
-@app.route('/memories_status', methods=['POST'])
-def memories():
-    if request.form.get('memories_status') == 'Да':
-        return render_template('memories_data.html')
-    elif request.form.get('memories_status') == 'Нет':
+@app.route('/files_status', methods=['POST'])
+def files():
+    if request.form.get('files_status') == 'Да':
+        return render_template('files_data.html')
+    elif request.form.get('files_status') == 'Нет':
         return render_template('stories.html')
 
 
-@app.route('/memories_data', methods=['POST'])
-def memories_data():
+@app.route('/files_data', methods=['POST'])
+def files_data():
     return render_template('stories.html')
 
 

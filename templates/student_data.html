@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+
+
+<div class="contact-bar">
+    <div class="form-container">
+        <form action="/student_data" method="POST">
+            <h3>Выберите уровень образования</h3>
+            <div class="form-group">
+                <label style="font-family: georgia; font-size: 18px">
+                    <input type="checkbox" name="education_level" value="bachelor">
+                    Бакалавриат
+                </label>
+            </div>
+            <div class="form-group">
+                <label style="font-family: georgia; font-size: 18px">
+                    <input type="checkbox" name="education_level" value="master">
+                    Магистратура
+                </label>
+            </div>
+            <div class="form-group">
+                <label style="font-family: georgia; font-size: 18px">
+                    <input type="checkbox" name="education_level" value="phd">
+                    Аспирантура
+                </label>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary"
+                 style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+
+<div class="contact-bar">
+    <div class="form-container">
+    <form action="/phd_data" method="POST">
+        <h1 style="font-family:georgia">Аспирантура</h1>
+        <div id="sections-container">
+            <div class="section">
+                <div class="form-group">
+                    <label for="phd_program_1" style="font-family:georgia">Направление в аспирантуре:</label>
+                    <select class="form-control" name="phd_program_1" id="phd_program_1">
+                        <option>–</option>
+                        <option>Аспирантская школа по филологическим наукам</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phd_start_year_1" style="font-family:georgia">Год начала обучения:</label>
+                    <input type="text" class="form-control" name="phd_start_year_1" id="phd_start_year_1" placeholder="1900">
+                </div>
+                <div class="form-group">
+                    <label for="phd_end_year_1" style="font-family:georgia">Год окончания обучения:</label>
+                    <input type="text" class="form-control" name="phd_end_year_1" id="phd_end_year_1" placeholder="1904">
+                </div>
+                <div class="form-group">
+                    <label for="phd_curator_1" style="font-family:georgia">ФИО научного руководителя кандидатской диссертации:</label>
+                    <input type="text" class="form-control" name="phd_curator_1" id="phd_curator_1" placeholder="Петров Петр Петрович">
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
+            <button type="submit" class="btn">Следующая страница</button>
+        </div>
+    </form>
+    <br>
+    </div></div>
+
+<script>
+    let sectionCount = 1;
+
+    function addSection() {
+        sectionCount++;
+        const container = document.getElementById('sections-container');
+        const sectionHTML = `
+            <div class="section">
+                <div class="form-group">
+                    <label for="phd_program_${sectionCount}" style="font-family:georgia">Направление в аспирантуре:</label>
+                    <select class="form-control" name="phd_program_${sectionCount}" id="phd_program_${sectionCount}">
+                        <option>–</option>
+                        <option>Аспирантская школа по филологическим наукам</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phd_start_year_${sectionCount}" style="font-family:georgia">Год начала обучения:</label>
+                    <input type="text" class="form-control" name="phd_start_year_${sectionCount}" id="phd_start_year_${sectionCount}" placeholder="1900">
+                </div>
+                <div class="form-group">
+                    <label for="phd_end_year_${sectionCount}" style="font-family:georgia">Год окончания обучения:</label>
+                    <input type="text" class="form-control" name="phd_end_year_${sectionCount}" id="phd_end_year_${sectionCount}" placeholder="1904">
+                </div>
+                <div class="form-group">
+                    <label for="phd_curator_${sectionCount}" style="font-family:georgia">ФИО научного руководителя кандидатской диссертации:</label>
+                    <input type="text" class="form-control" name="phd_curator_${sectionCount}" id="phd_curator_${sectionCount}" placeholder="Петров Петр Петрович">
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', sectionHTML);
+    }
+</script>
+{% endblock %}

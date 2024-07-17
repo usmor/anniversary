@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+<div class="contact-bar">
+    <div class="form-container">
+        <form action="/expedition_data" method="POST">
+            <p>что-то про экспедиции</p>
+            <div class="text-center">
+            <button type="submit" class="btn btn-secondary"
+                 style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
+            </div>
+    </form>
+    </div>
+</div>
+{% endblock %}

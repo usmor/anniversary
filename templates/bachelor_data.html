@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+
+
+<div class="contact-bar">
+    <div class="form-container">
+    <form action="/bachelor_data" method="POST">
+        <h1 style="font-family:georgia">Бакалавриат</h1>
+        <div id="sections-container">
+            <div class="section">
+                <div class="form-group">
+                    <label for="bach_program_1" style="font-family:georgia">Ваша программа в бакалавриате:</label>
+                    <select class="form-control" name="bach_program_1" id="bach_program_1">
+                        <option>–</option>
+                        <option>ФиКЛ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bach_start_year_1" style="font-family:georgia">Год начала обучения:</label>
+                    <input type="text" class="form-control" name="bach_start_year_1" id="bach_start_year_1" placeholder="1900">
+                </div>
+                <div class="form-group">
+                    <label for="bach_end_year_1" style="font-family:georgia">Год окончания обучения:</label>
+                    <input type="text" class="form-control" name="bach_end_year_1" id="bach_end_year_1" placeholder="1904">
+                </div>
+                <div class="form-group">
+                    <label for="bach_curator_1" style="font-family:georgia">ФИО научного руководителя дипломной работы:</label>
+                    <input type="text" class="form-control" name="bach_curator_1" id="bach_curator_1" placeholder="Петров Петр Петрович">
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
+            <button type="submit" class="btn">Следующая страница</button>
+        </div>
+    </form>
+    <br>
+    </div></div>
+<br>
+
+<script>
+    let sectionCount = 1;
+
+    function addSection() {
+        sectionCount++;
+        const container = document.getElementById('sections-container');
+        const sectionHTML = `
+            <div class="section">
+                <div class="form-group">
+                    <label for="bach_program_${sectionCount}" style="font-family:georgia">Ваша программа в бакалавриате:</label>
+                    <select class="form-control" name="bach_program_${sectionCount}" id="bach_program_${sectionCount}">
+                        <option>–</option>
+                        <option>ФиКЛ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bach_start_year_${sectionCount}" style="font-family:georgia">Год начала обучения:</label>
+                    <input type="text" class="form-control" name="bach_start_year_${sectionCount}" id="bach_start_year_${sectionCount}" placeholder="1900">
+                </div>
+                <div class="form-group">
+                    <label for="bach_end_year_${sectionCount}" style="font-family:georgia">Год окончания обучения:</label>
+                    <input type="text" class="form-control" name="bach_end_year_${sectionCount}" id="bach_end_year_${sectionCount}" placeholder="1904">
+                </div>
+                <div class="form-group">
+                    <label for="bach_curator_${sectionCount}" style="font-family:georgia">ФИО научного руководителя дипломной работы:</label>
+                    <input type="text" class="form-control" name="bach_curator_${sectionCount}" id="bach_curator_${sectionCount}" placeholder="Петров Петр Петрович">
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', sectionHTML);
+    }
+</script>
+{% endblock %}

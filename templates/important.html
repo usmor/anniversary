@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Анкета{% endblock %}
+
+{% block content %}
+
+
+<div class="contact-bar">
+<div class="form-container">
+    <form action="/important_data" method="POST">
+        <h1 style="font-family:georgia; font-size: 24px">Важные для вас (в том числе эмоционально) проекты, в которых вы участвовали, сотрудничество с другими институтами или командами</h1>
+        <br>
+        <div id="sections-container">
+            <div class="section">
+                <div class="form-group">
+                    <label for="project_1" style="font-family:georgia">Укажите название проекта и важную информацию о нем:</label>
+                    <input type="text" class="form-control" name="project_1" id="project_1" placeholder="Разработка чувашского корпуса">
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
+            <button type="submit" class="btn">Следующая страница</button>
+        </div>
+    </form>
+    <br>
+    </div></div>
+<br>
+
+<script>
+    let sectionCount = 1;
+
+    function addSection() {
+        sectionCount++;
+        const container = document.getElementById('sections-container');
+        const sectionHTML = `
+            <div class="section">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="project_${sectionCount}" id="project_${sectionCount}" placeholder="Разработка чувашского корпуса">
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', sectionHTML);
+    }
+</script>
+{% endblock %}

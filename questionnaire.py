@@ -167,7 +167,13 @@ def employee():
     if request.form.get('employee_status') == 'Да':
         return render_template('teaching.html')
     elif request.form.get('employee_status') == 'Нет':
-        return render_template('internships.html')
+        return render_template('connection.html')
+
+
+@app.route('/connection', methods=['POST'])
+def connection():
+    connect = request.form.get('connection')
+    return render_template('now.html')
 
 
 @app.route('/teaching_status', methods=['POST'])
@@ -196,76 +202,25 @@ def research():
 
 @app.route('/teaching_data', methods=['POST'])
 def teaching_data():
-    teaching_data = {}
-    section_count = 1
-
-    while True:
-        teaching_position = request.form.get(f'teaching_position_{section_count}')
-        subject = request.form.get(f'subject_{section_count}')
-        teaching_start_year = request.form.get(f'teaching_start_year_{section_count}')
-        teaching_end_year = request.form.get(f'teaching_end_year_{section_count}')
-
-        if not teaching_position and not subject and not teaching_start_year and not teaching_end_year:
-            break
-
-        teaching_data[f'section_{section_count}'] = {
-            'teaching_position': teaching_position,
-            'subject': subject,
-            'teaching_start_year': teaching_start_year,
-            'teaching_end_year': teaching_end_year
-        }
-
-        section_count += 1
-
+    courses = request.form.getlist('courses')
+    teaching_start_year = request.form.get('teaching_start_year')
+    teaching_end_year = request.form.get('teaching_end_year')
     return render_template('management.html')
 
 
 @app.route('/management_data', methods=['POST'])
 def management_data():
-    management_data = {}
-    section_count = 1
-
-    while True:
-        management_position = request.form.get(f'management_position_{section_count}')
-        management_start_year = request.form.get(f'management_start_year_{section_count}')
-        management_end_year = request.form.get(f'management_end_year_{section_count}')
-
-        if not management_position and not management_start_year and not management_end_year:
-            break
-
-        management_data[f'section_{section_count}'] = {
-            'management_position': management_position,
-            'management_start_year': management_start_year,
-            'management_end_year': management_end_year
-        }
-
-        section_count += 1
+    institution = request.form.getlist('institution')
+    management_start_year = request.form.get('management_start_year')
+    management_end_year = request.form.get('management_end_year')
     return render_template('research.html')
 
 
 @app.route('/research_data', methods=['POST'])
 def research_data():
-    research_data = {}
-    section_count = 1
-
-    while True:
-        laboratory_name = request.form.get(f'laboratory_name_{section_count}')
-        research_position = request.form.get(f'research_position_{section_count}')
-        research_start_year = request.form.get(f'research_start_year_{section_count}')
-        research_end_year = request.form.get(f'research_end_year_{section_count}')
-
-        if not laboratory_name and not research_position and not research_start_year and not research_end_year:
-            break
-
-        research_data[f'section_{section_count}'] = {
-            'laboratory_name': laboratory_name,
-            'research_position': research_position,
-            'research_start_year': research_start_year,
-            'research_end_year': research_end_year
-        }
-
-        section_count += 1
-
+    research_groups = request.form.getlist('research_groups')
+    research_start_year = request.form.get('research_start_year')
+    research_end_year = request.form.get('research_end_year')
     return render_template('internships.html')
 
 
@@ -314,25 +269,36 @@ def important():
     section_count = 1
     while True:
         project = request.form.get(f'project_{section_count}')
-
         if not project:
             break
 
     important_projects[f'important_project_{section_count}'] = project
 
-    return render_template('files.html')
+    return render_template('memories.html')
 
 
-@app.route('/files_status', methods=['POST'])
-def files():
-    if request.form.get('files_status') == 'Да':
-        return render_template('files_data.html')
-    elif request.form.get('files_status') == 'Нет':
+@app.route('/memories_status', methods=['POST'])
+def memories():
+    if request.form.get('memories_status') == 'Да':
+        return render_template('memories_data.html')
+    elif request.form.get('memories_status') == 'Нет':
         return render_template('stories.html')
 
 
-@app.route('/files_data', methods=['POST'])
-def files_data():
+@app.route('/memories_data', methods=['POST'])
+def memories_data():
+    response = request.form.get('response')
+    if response == 'Поделюсь сейчас':
+        link = request.form.get('link')
+        description = request.form.get('description')
+    elif response == 'Свяжитесь со мной позже':
+        contact_method = request.form.get('contact-method')
+        if contact_method == 'По тому адресу, который был указан мною ранее':
+            # в бд должен остаться старый адрес
+            pass
+        elif contact_method == 'Указать новый адрес':
+            # в бд новый адрес
+            new_address = request.form.get('new_address')
     return render_template('stories.html')
 
 
@@ -346,6 +312,17 @@ def stories():
 
 @app.route('/stories_data', methods=['POST'])
 def stories_data():
+    response = request.form.get('response')
+    if response == 'Поделюсь сейчас':
+        story = request.form.get('story')
+    elif response == 'Свяжитесь со мной позже':
+        contact_method = request.form.get('contact-method')
+        if contact_method == 'По тому адресу, который был указан мною ранее':
+            # в бд должен остаться старый адрес
+            pass
+        elif contact_method == 'Указать новый адрес':
+            # в бд новый адрес
+            new_address = request.form.get('new_address')
     return render_template('what_shl_is.html')
 
 
@@ -354,10 +331,6 @@ def what_shl_is():
     answer = request.form.get('answer')
     return render_template('thanks.html')
 
-# @app.route('/event_data', methods=['POST'])
-# def event_data():
-#     # собираем какую-нибудь информацию
-#     return render_template('thanks.html')
 
 
 if __name__ == '__main__':

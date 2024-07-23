@@ -3,7 +3,29 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
-
+<style>
+    body {
+        font-family: georgia;
+        font-size: 18px;
+    }
+    .contact-bar {
+        background-color: #F8F32B;
+        color: #000000;
+        text-align: center;
+        padding: 10px 0;
+    }
+    .form-container {
+        background-color: #8D99AE;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px auto;
+        max-width: 1000px;
+    }
+    .form-group {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+</style>
 <div class="contact-bar">
 <div class="form-container">
     <form action="/expedition_status" method="POST">

@@ -3,65 +3,124 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
-<style>
-    .hidden {
-        display: none;
-    }
-</style>
-<div class="contact-bar">
-    <div class="form-container">
+    <style>
+        body {
+            font-family: georgia;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 18px;
+        }
 
-    <h2>Выберите действие:</h2>
-    <select id="answerSelect" onchange="showFields()">
-        <option value="none">-</option>
-        <option value="shareNow">Поделюсь сейчас</option>
-        <option value="contactLater">Свяжитесь со мной позже</option>
-    </select>
+        h1 {
+            text-align: center;
+        }
 
-    <div id="shareNow" class="hidden">
-        <label for="shareText">Ваше воспоминание:</label><br>
-        <textarea id="shareText"></textarea>
-    </div>
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
 
-    <div id="contactLater" class="hidden">
-        <p>Правильный ли адрес для связи?</p>
-        <input type="checkbox" id="correctAddress"> Да, правильный<br>
-        <div id="newAddress" class="hidden">
-            <label for="newAddressInput">Укажите новый адрес:</label><br>
-            <input type="text" id="newAddressInput">
-        </div>
-    </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-secondary"
-                 style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
-        </div>
-    </div>
-</div>
+        label {
+            margin: 10px 0;
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="url"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .conditional {
+            display: none;
+            margin-top: 18px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .conditional h3 {
+            margin-top: 0;
+            color: #000000;
+        }
+    </style>
 <script>
-function showFields() {
-    var answerSelect = document.getElementById("answerSelect");
-    var shareNow = document.getElementById("shareNow");
-    var contactLater = document.getElementById("contactLater");
-    var newAddress = document.getElementById("newAddress");
+    function toggleFields(selection) {
+        const shareNowFields = document.getElementById('share-now-fields');
+        const contactLaterFields = document.getElementById('contact-later-fields');
 
-    if (answerSelect.value === "shareNow") {
-        shareNow.classList.remove("hidden");
-        contactLater.classList.add("hidden");
-        newAddress.classList.add("hidden");
-    } else if (answerSelect.value === "contactLater") {
-        shareNow.classList.add("hidden");
-        contactLater.classList.remove("hidden");
+        if (selection === 'Поделюсь сейчас') {
+            shareNowFields.style.display = 'block';
+            contactLaterFields.style.display = 'none';
+        } else if (selection === 'Свяжитесь со мной позже') {
+            shareNowFields.style.display = 'none';
+            contactLaterFields.style.display = 'block';
+        } else {
+            shareNowFields.style.display = 'none';
+            contactLaterFields.style.display = 'none';
+        }
     }
-}
-
-document.getElementById("correctAddress").addEventListener("change", function() {
-    var newAddress = document.getElementById("newAddress");
-    if (this.checked) {
-        newAddress.classList.add("hidden");
-    } else {
-        newAddress.classList.remove("hidden");
-    }
-});
 </script>
 
+<div class="contact-bar">
+    <div class="form-container">
+        <form action="/stories_data" method="POST">
+            <label>
+                <input type="radio" name="response" value="Поделюсь сейчас" onclick="toggleFields(this.value)">
+                Поделюсь сейчас
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="response" value="Свяжитесь со мной позже" onclick="toggleFields(this.value)">
+                Свяжитесь со мной позже
+            </label>
+
+            <div id="share-now-fields" class="conditional" style="display: none;">
+                <h3 style="font-size: 20px">Добавьте всю необходимую информацию</h3>
+                <label for="story">Ваше воспоминание / история:</label>
+                <p><i>(можно оставить ссылку на документ)</i></p>
+                <textarea id="story" name="story" rows="4" placeholder="Введите текст"></textarea>
+            </div>
+
+            <div id="contact-later-fields" class="conditional" style="display: none;">
+                <h3 style="font-size: 20px">Как Вы предпочитаете, чтобы с Вами связались?</h3>
+                <label>
+                    <input type="radio" name="contact-method" value="По тому адресу, который был указан мною ранее">
+                    По тому адресу, который был указан мною ранее
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="contact-method" value="Указать новый адрес" onclick="document.getElementById('new-address').style.display='block';">
+                    Указать новый адрес
+                </label>
+                <br>
+                <div id="new-address" class="conditional" style="display: none;">
+                    <label for="new_address">Новый адрес:</label>
+                    <input type="text" id="new_address" name="new_address" placeholder="Введите новый адрес">
+                </div>
+            </div>
+
+            <br>
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary"
+                        style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
+

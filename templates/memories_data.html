@@ -3,15 +3,125 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
+    <style>
+        body {
+            font-family: georgia;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 18px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        label {
+            margin: 10px 0;
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="url"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .conditional {
+            display: none;
+            margin-top: 18px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .conditional h3 {
+            margin-top: 0;
+            color: #000000;
+        }
+    </style>
+<script>
+    function toggleFields(selection) {
+        const shareNowFields = document.getElementById('share-now-fields');
+        const contactLaterFields = document.getElementById('contact-later-fields');
+
+        if (selection === 'Поделюсь сейчас') {
+            shareNowFields.style.display = 'block';
+            contactLaterFields.style.display = 'none';
+        } else if (selection === 'Свяжитесь со мной позже') {
+            shareNowFields.style.display = 'none';
+            contactLaterFields.style.display = 'block';
+        } else {
+            shareNowFields.style.display = 'none';
+            contactLaterFields.style.display = 'none';
+        }
+    }
+</script>
+
 <div class="contact-bar">
     <div class="form-container">
         <form action="/memories_data" method="POST">
-            <p>спрашиваем про материалы</p>
-            <div class="text-center">
-            <button type="submit" class="btn btn-secondary"
-                 style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
+            <label>
+                <input type="radio" name="response" value="Поделюсь сейчас" onclick="toggleFields(this.value)">
+                Поделюсь сейчас
+            </label>
+            <br>
+            <label>
+                <input type="radio" name="response" value="Свяжитесь со мной позже" onclick="toggleFields(this.value)">
+                Свяжитесь со мной позже
+            </label>
+
+            <div id="share-now-fields" class="conditional" style="display: none;">
+                <h3 style="font-size: 20px">Добавьте всю необходимую информацию</h3>
+                <label for="link">Ссылка на архив с материалами (облачное хранение):</label>
+                <input type="url" id="link" name="link" placeholder="Введите ссылку">
+                <br>
+                <label for="description">Краткое описание архива:</label>
+                <textarea id="description" name="description" rows="4" placeholder="Введите краткое описание"></textarea>
             </div>
-    </form>
+
+            <div id="contact-later-fields" class="conditional" style="display: none;">
+                <h3 style="font-size: 20px">Как Вы предпочитаете, чтобы с Вами связались?</h3>
+                <label>
+                    <input type="radio" name="contact-method" value="По тому адресу, который был указан мною ранее">
+                    По тому адресу, который был указан мною ранее
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="contact-method" value="Указать новый адрес" onclick="document.getElementById('new-address').style.display='block';">
+                    Указать новый адрес
+                </label>
+                <br>
+                <div id="new-address" class="conditional" style="display: none;">
+                    <label for="new_address">Новый адрес:</label>
+                    <input type="text" id="new_address" name="new_address" placeholder="Введите новый адрес">
+                </div>
+            </div>
+
+            <br>
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary"
+                        style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
+            </div>
+        </form>
     </div>
 </div>
+
 {% endblock %}

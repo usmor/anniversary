@@ -1,74 +1,137 @@
 {% extends 'base.html' %}
 
-{% block title %}Анкета{% endblock %}
-
 {% block content %}
-
 <div class="contact-bar">
     <div class="form-container">
-    <form action="/teaching_data" method="POST">
-        <h1 style="font-family:georgia">Преподавание</h1>
-        <div id="sections-container">
-            <div class="section">
-                <div class="form-group">
-                    <label for="teaching_position_1" style="font-family:georgia">Ваша должность:</label>
-                    <select class="form-control" name="teaching_position_1" id="teaching_position_1">
-                        <option>–</option>
-                        <option>ассистет</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="subject_1" style="font-family:georgia">Название дисциплины:</label>
-                    <input type="text" class="form-control" name="subject_1" id="subject_1" placeholder="Физкультура">
-                </div>
-                <div class="form-group">
-                    <label for="teaching_start_year_1" style="font-family:georgia">Год начала преподавания:</label>
-                    <input type="text" class="form-control" name="teaching_start_year_1" id="teaching_start_year_1" placeholder="1900">
-                </div>
-                <div class="form-group">
-                    <label for="teaching_end_year_1" style="font-family:georgia">Год окончания преподавания:</label>
-                    <input type="text" class="form-control" name="teaching_end_year_1" id="teaching_end_year_1" placeholder="1904">
-                </div>
-            </div>
+        <form action="/teaching_data" method="POST">
+        <div class="form-group">
+            <label>На каких программах Вы преподаете или преподавали?</label>
+            <table style="width: 100%; border-collapse: collapse; font-size: 18px">
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="fikl" name="courses" value="Фундаментальная и компьютерная лингвистика">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Фундаментальная и компьютерная лингвистика
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="comp_ling" name="courses" value="Компьютерная лингвистика">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Компьютерная лингвистика
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="theory_ling" name="courses" value="Лингвистическая теория и описание языка">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Лингвистическая теория и описание языка
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="rki" name="courses" value="Русский как иностранный во взаимодействии языков и культур">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Русский как иностранный во взаимодействии языков и культур
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="digital" name="courses" value="Цифровые методы в гуманитарных науках">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Цифровые методы в гуманитарных науках
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="phd" name="courses" value="Аспирантская школа по филологическим наукам">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Аспирантская школа по филологическим наукам
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="comp_ling_dpo" name="courses" value="Компьютерная лингвистика (ДПО)">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Компьютерная лингвистика (ДПО)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="rki_dpo" name="courses" value="Методика преподавания русского языка как иностранного (ДПО)">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Методика преподавания русского языка как иностранного (ДПО)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="python" name="courses" value="Введение в Python для Digital Humanities (ДПО)">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Введение в Python для Digital Humanities (ДПО)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="R" name="courses" value="Введение в анализ данных на R (ДПО)">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Введение в анализ данных на R (ДПО)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; border: none; text-align: center;">
+                        <label>
+                            <input type="checkbox" id="rus" name="courses" value="Национальный корпус русского языка на уроках словесности в школе. Русский язык (ДПО)">
+                        </label>
+                    </td>
+                    <td style="border: none;">
+                        Национальный корпус русского языка на уроках словесности в школе. Русский язык (ДПО)
+                    </td>
+                </tr>
+            </table>
         </div>
-        <div class="text-center">
-            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
-            <button type="submit" class="btn">Следующая страница</button>
+        <div class="form-group">
+            <label for="teaching_start_year" style="font-family:georgia">Год начала преподавания:</label>
+            <input type="text" class="form-control" name="teaching_start_year" id="teaching_start_year" placeholder="1900">
         </div>
-    </form>
-    <br>
-    </div></div>
-
-<script>
-    let sectionCount = 1;
-
-    function addSection() {
-        sectionCount++;
-        const container = document.getElementById('sections-container');
-        const sectionHTML = `
-            <div class="section">
-                <div class="form-group">
-                    <label for="teaching_position_${sectionCount}" style="font-family:georgia">Ваша должность:</label>
-                    <select class="form-control" name="teaching_position_${sectionCount}" id="teaching_position_${sectionCount}">
-                        <option>–</option>
-                        <option>ассистент</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="subject_${sectionCount}" style="font-family:georgia">Название дисциплины:</label>
-                    <input type="text" class="form-control" name="subject_${sectionCount}" id="subject_${sectionCount}" placeholder="Физкультура">
-                </div>
-                <div class="form-group">
-                    <label for="teaching_start_year_${sectionCount}" style="font-family:georgia">Год начала преподавания:</label>
-                    <input type="text" class="form-control" name="teaching_start_year_${sectionCount}" id="teaching_start_year_${sectionCount}" placeholder="1900">
-                </div>
-                <div class="form-group">
-                    <label for="teaching_end_year_${sectionCount}" style="font-family:georgia">Год окончания преподавания:</label>
-                    <input type="text" class="form-control" name="teaching_end_year_${sectionCount}" id="teaching_end_year_${sectionCount}" placeholder="1904">
-                </div>
+        <div class="form-group">
+            <label for="teaching_end_year" style="font-family:georgia">Год окончания преподавания:</label>
+            <input type="text" class="form-control" name="teaching_end_year" id="teaching_end_year" placeholder="1904">
+        </div>
+            <div class="text-center">
+                <button type="submit" class="btn">Следующая страница</button>
             </div>
-        `;
-        container.insertAdjacentHTML('beforeend', sectionHTML);
-    }
-</script>
+        </form>
+    </div>
+</div>
+
 {% endblock %}

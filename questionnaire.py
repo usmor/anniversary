@@ -210,9 +210,15 @@ def teaching_data():
 
 @app.route('/management_data', methods=['POST'])
 def management_data():
-    institution = request.form.getlist('institution')
+    institutions = request.form.getlist('institution')
+    other_institution = request.form.get('other_institution', '')
+    if 'Другое' in institutions:
+        institutions.remove('Другое')
+        institutions.append(other_institution)
+
     management_start_year = request.form.get('management_start_year')
     management_end_year = request.form.get('management_end_year')
+
     return render_template('research.html')
 
 
@@ -260,6 +266,15 @@ def expedition():
 
 @app.route('/expedition_data', methods=['POST'])
 def expedition_data():
+    expedition_data = {}
+    section_count = 1
+    while True:
+        year = request.form.get(f'year_{section_count}')
+        if not year:
+            break
+
+    expedition_data[year] = {
+    }
     return render_template('important.html')
 
 

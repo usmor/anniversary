@@ -261,6 +261,21 @@
                             DH центр
                         </td>
                     </tr>
+                    <tr>
+                        <td style="width: 10%; border: none; text-align: center;">
+                            <label>
+                                <input type="checkbox" id="other" name="institution" value="Другое" onclick="toggleOtherInput(this)">
+                            </label>
+                        </td>
+                        <td style="border: none;">
+                            Другое
+                        </td>
+                    </tr>
+                    <tr id="otherInputRow" style="display: none;">
+                        <td style="border: none;" colspan="2">
+                            <input type="text" id="otherInstitution" name="other_institution" placeholder="Укажите другую институцию" style="width: 100%;">
+                        </td>
+                    </tr>
             </table>
         </div>
         <div class="form-group">
@@ -277,5 +292,16 @@
     </form>
     <br>
     </div></div>
+<script>
+    function toggleOtherInput(checkbox) {
+        var otherInputRow = document.getElementById('otherInputRow');
 
+        if (checkbox.checked) {
+            otherInputRow.style.display = 'table-row';
+        } else {
+            otherInputRow.style.display = 'none';
+            document.getElementById('otherInstitution').value = '';
+        }
+    }
+</script>
 {% endblock %}

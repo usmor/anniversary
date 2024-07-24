@@ -3,16 +3,15 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
-
 <div class="contact-bar">
     <div class="form-container">
-    <form action="/expedition_data" method="POST">
-        <h1 style="font-family:georgia; font-size: 24px">Экспедиции</h1>
-        <div id="sections-container">
-            <div class="section">
-                <div class="form-group">
-                    <label for="year_1" style="font-family:georgia">Выберите год:</label>
-                    <select id="year_1" name="year_1">
+        <form action="/expedition_data" method="POST">
+            <h1>Экспедиции</h1>
+            <div id="sections-container">
+                <div class="section form-group">
+                    <label>Выберите год:</label>
+                    <select class="year_1" name="year_1" onchange="updateExpeditions(this)">
+                        <option value="">-- Выберите год --</option>
                         <option value="2012">2012</option>
                         <option value="2013">2013</option>
                         <option value="2014">2014</option>
@@ -28,47 +27,136 @@
                         <option value="2024">2024</option>
                     </select>
                 </div>
-
+                <div class="expeditions-container" style="margin-top: 20px;"></div>
             </div>
-        </div>
-        <div class="text-center">
-            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
-            <button type="submit" class="btn">Следующая страница</button>
-        </div>
-    </form>
-    <br>
-    </div></div>
+            <div class="text-center">
+                <button type="button" onclick="addSection()" class="btn">Добавить еще экспедиции</button>
+                <button type="submit" class="btn">Следующая страница</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .section {
+        background-color: #ffffff;
+        padding: 15px; /* Отступы внутри раздела */
+        margin-bottom: 15px; /* Отступы между разделами */
+    }
+    .other-input {
+        display: none; /* Скрываем поле ввода по умолчанию */
+        margin-top: 10px; /* Отступ сверху для поля ввода */
+    }
+</style>
 
 <script>
-    let sectionCount = 1;
+    const jsonData = [{"year": 2012, "expeditions": [{"language": ["Хантыйский"], "time": "Июль", "location": "с. Теги Берёзовского района ХМАО-Югра", "supervisor": ["А. И. Кузнецова", "С. Ю. Толдова"], "notes": "NA"}, {"language": ["Бесермянский"], "time": "NA", "location": "Шамардан", "supervisor": ["Т. А. Архангельский"], "notes": "По карте Г. Мороза"}]}, {"year": 2013, "expeditions": [{"language": ["Адыгейский", "Кабардино-черкесский (бесленеевский)"], "time": "Июль", "location": "Пшичо, Кабехабль, Хатажукай, Уляп; Адыгея", "supervisor": ["Ю. А. Ландер", "П. Аркадьев"], "notes": "NA"}, {"language": ["Мокшанский"], "time": "Июль", "location": "с. Лесное Цибаево, Лесное Плуксово, Лесное Ардашево Темниковского района респ. Мордовия", "supervisor": ["А. И. Кузнецова", "С. Ю. Толдова"], "notes": "NA"}, {"language": ["Бесермянский"], "time": "NA", "location": "Шамардан", "supervisor": ["Т. А. Архангельский"], "notes": "По карте Г. Мороза"}]}, {"year": 2014, "expeditions": [{"language": ["Адыгейский"], "time": "Июль", "location": "Вочепший, Нешукай; Адыгея", "supervisor": ["Ю. А. Ландер", "П. Аркадьев"], "notes": "NA"}, {"language": ["Мокшанский"], "time": "Июль", "location": "с. Лесное Цибаево, Лесное Плуксово, Лесное Ардашево Темниковского района респ. Мордовия", "supervisor": ["А. И. Кузнецова", "С. Ю. Толдова"], "notes": "NA"}, {"language": ["Бесермянский"], "time": "NA", "location": "Шамардан", "supervisor": ["Т. А. Архангельский"], "notes": "По карте Г. Мороза"}]}, {"year": 2015, "expeditions": [{"language": ["Кабардино-черкесский (кубанский)"], "time": "Июль", "location": "Ходзь, Блечепсин; Адыгея", "supervisor": ["Ю. А. Ландер", "П. Аркадьев"], "notes": "NA"}, {"language": ["Идиш"], "time": "Июль", "location": "Молдова", "supervisor": ["Т. А Архангельский"], "notes": "NA"}, {"language": ["Мокшанский"], "time": "Июль", "location": "с. Лесное Цибаево, Лесное Плуксово, Лесное Ардашево Темниковского района респ. Мордовия", "supervisor": ["С. Ю. Толдова"], "notes": "NA"}, {"language": ["Бесермянский"], "time": "NA", "location": "Шамардан", "supervisor": ["Т. А. Архангельский"], "notes": "По карте Г. Мороза"}]}, {"year": 2016, "expeditions": [{"language": ["Кабардино-черкесский (кубанский)"], "time": "Июль", "location": "Ходзь, Блечепсин; Адыгея", "supervisor": ["Ю. А. Ландер", "П. Аркадьев"], "notes": "NA"}, {"language": ["Горномарийский"], "time": "Июль", "location": "с. Микряково Горномарийского района респ. Марий Эл", "supervisor": ["С. Ю. Толдова"], "notes": "NA"}, {"language": ["Чукотский"], "time": "NA", "location": "Амгуэма", "supervisor": ["О. С. Волков", "И. А. Стенин"], "notes": "NA"}, {"language": ["Бесермянский"], "time": "NA", "location": "Шамардан", "supervisor": ["Т. А. Архангельский"], "notes": "По карте Г. Мороза"}]}, {"year": 2017, "expeditions": [{"language": ["Абазинский"], "time": "Июль", "location": "Инжич-Чукун; Карачаево-Черкесия", "supervisor": ["Ю. А. Ландер", "П. Аркадьев"], "notes": "NA"}, {"language": ["Горномарийский"], "time": "Июнь-Июль", "location": "с. Микряково Горномарийского района респ. Марий Эл", "supervisor": ["А. А. Волкова", "С. Ю. Толдова"], "notes": "NA"}, {"language": ["Горномарийский"], "time": "Декабрь", "location": "с. Микряково Горномарийского района респ. Марий Эл", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Горномарийский"], "time": "Январь", "location": "с. Микряково Горномарийского района респ. Марий Эл", "supervisor": ["А. А. Козлов"], "notes": "NA"}, {"language": ["Русский фольклор", "Тверские диалекты"], "time": "Июль", "location": "Кимрский район Тверской области", "supervisor": ["Ю. М. Кувшинская"], "notes": "NA"}, {"language": ["Чукотский"], "time": "NA", "location": "Амгуэма", "supervisor": ["О. С. Волков", "И. А. Стенин"], "notes": "NA"}]}, {"year": 2018, "expeditions": [{"language": ["Абазинский"], "time": "Июль", "location": "Инжич-Чукун; Карачаево-Черкесия", "supervisor": ["Ю. А. Ландер", "П. Аркадьев"], "notes": "NA"}, {"language": ["Шугнанский"], "time": "Июль-Август", "location": "Хорог; Таджикистан", "supervisor": ["Е. В. Рахилина", "Р. В. Ронько"], "notes": "NA"}, {"language": ["Хантыйский"], "time": "Июнь-Июль", "location": "с. Казым Белоярского района ХМАО-Югра", "supervisor": ["С. Ю. Толдова", "А. А. Волкова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Горномарийский"], "time": "Ноябрь", "location": "с. Микряково Горномарийского района респ. Марий Эл", "supervisor": ["А. А. Козлов"], "notes": "NA"}, {"language": ["Русский фольклор", "Диалекты"], "time": "Июль", "location": "Южский и Пестяковский районы Ивановской области", "supervisor": ["Ю. М. Кувшинская"], "notes": "NA"}, {"language": ["Чукотский"], "time": "NA", "location": "Амгуэма", "supervisor": ["О. С. Волков", "И. А. Стенин"], "notes": "NA"}, {"language": ["Русский (Псковская группа говоров)"], "time": "Июнь-Июль", "location": "Псковская область, Опочецкий район, д. Кадниково", "supervisor": ["Р. В. Ронько"], "notes": "NA"}]}, {"year": 2019, "expeditions": [{"language": ["Абазинский"], "time": "Апрель", "location": "Инжич-Чукун; Карачаево-Черкесия", "supervisor": ["Ю. А. Ландер", "П. Аркадьев"], "notes": "NA"}, {"language": ["Шугнанский"], "time": "Июль-Август", "location": "Хорог; Таджикистан", "supervisor": ["Е. В. Рахилина", "Р. В. Ронько"], "notes": "NA"}, {"language": ["Хантыйский"], "time": "Июнь-Июль", "location": "с. Казым Белоярского района ХМАО-Югра", "supervisor": ["С. Ю. Толдова", "А. А. Волкова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Тоба-батакский"], "time": "Август", "location": "Парапат, Тук-тук; Индонезия", "supervisor": ["Ю. А. Ландер"], "notes": "NA"}, {"language": ["Русский фольклор", "Диалекты"], "time": "Август", "location": "Южский район Ивановской области", "supervisor": ["Ю. М. Кувшинская"], "notes": "NA"}, {"language": ["Языковая ситуация в Карелии"], "time": "Июнь-Июль", "location": "центральная Карелия (Петрозаводск, Прионежский, Кондопожский и Пряжинский районы)", "supervisor": ["А. В. Влахов"], "notes": "NA"}, {"language": ["Русский (Псковская группа говоров)"], "time": "Июль", "location": "Псковская область, Опочецкий район, д. Кишкино", "supervisor": ["Р. В. Ронько"], "notes": "NA"}, {"language": ["Эвенский"], "time": "Июнь-Июль", "location": "Эссо, Анавгай", "supervisor": ["О. С. Волков"], "notes": "NA"}, {"language": ["Кильдинский саамский"], "time": "Июль-Август", "location": "Ловозеро", "supervisor": ["О. С. Волков"], "notes": "NA"}]}, {"year": 2020, "expeditions": [{"language": ["Хантыйский"], "time": "Апрель-Июнь", "location": "Zoom", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Языковая и этнокультурная ситуация в Карелии и Мурманской области"], "time": "Март", "location": "северо-запад Карелии (Костомукша и окрестности) и северо-запад Мурманской области (Печенгский район)", "supervisor": ["А. В. Влахов"], "notes": "NA"}, {"language": ["Эвенский"], "time": "Январь", "location": "Эссо, Анавгай", "supervisor": ["А. И. Виняр"], "notes": "NA"}]}, {"year": 2021, "expeditions": [{"language": ["Абазинский"], "time": "Апрель-Май", "location": "Красный Восток; Карачаево-Черкесия", "supervisor": ["Г. Мороз"], "notes": "NA"}, {"language": ["Якутский"], "time": "Июнь-Июль", "location": "Якутск; с. Столбы (Хатырык) Намского улуса РС(Я)", "supervisor": ["И. А. Стенин", "А. А. Козлов"], "notes": "NA"}, {"language": ["Хантыйский"], "time": "Июль-Август", "location": "с. Казым Белоярского района ХМАО-Югра", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Чукотский"], "time": "Август", "location": "с. Амгуэма Иультинского района Чукотского автономного округа", "supervisor": ["И. А. Стенин"], "notes": "NA"}, {"language": ["Русский фольклор", "Диалекты"], "time": "Май", "location": "Мантуровский район Костромской области", "supervisor": ["Ю. М. Кувшинская"], "notes": "NA"}, {"language": ["Шугнанский"], "time": "Июнь-Июль", "location": "г. Хорог, горно-Бадахшанская автономная область", "supervisor": ["Е. В. Рахилина", "В. А. Плунгян", "Е.Е. Арманд", "Р.В. Ронько"], "notes": "NA"}, {"language": ["Русский (Псковская группа говоров)"], "time": "Июль", "location": "Тверская область, Западнодвинский район, д. Шетнево", "supervisor": ["Р. В. Ронько"], "notes": "NA"}, {"language": ["Эвенский"], "time": "Июнь-Июль", "location": "Эссо, Анавгай", "supervisor": ["А. И. Виняр"], "notes": "NA"}, {"language": ["Саамский"], "time": "Июль-Август", "location": "Ловозеро", "supervisor": ["И. М. Егоров"], "notes": "Не спонсировался ОРЗ"}, {"language": ["Языковая ситуация в Карелии"], "time": "Июнь-Июль", "location": "Центральная и южная Карелия (Пряжинский, Олонецкий, Суоярвский, Питкярантский районы)", "supervisor": ["А. В. Влахов"], "notes": "NA"}, {"language": ["Языковая ситуация в Коми"], "time": "Июль-Август", "location": "Ижемский район Республики Коми", "supervisor": ["А. В. Влахов"], "notes": "NA"}, {"language": ["Рутульский"], "time": "Июнь-Июль", "location": "Кина, Рутульский район", "supervisor": ["Н. Р. Добрушина"], "notes": "NA"}, {"language": ["Мокшанский"], "time": "Сентябрь-Октябрь", "location": "Лесное Цибаево, респ. Мордовия", "supervisor": ["А. А. Козлов", "С. Ю. Толдова"], "notes": "NA"}, {"language": ["Эвенкийский"], "time": "Август", "location": "Аяно-майский район Хабаровского края", "supervisor": ["О. А. Казакевич"], "notes": "NA"}, {"language": ["Социолингвистическая в Дагестане"], "time": "Апрель", "location": "Несколько сел на границе Лакского и Цудахарского районов (с. Куба, Цудахар и др.)", "supervisor": ["Н. Р. Добрушина"], "notes": "NA"}]}, {"year": 2022, "expeditions": [{"language": ["Якутский"], "time": "Июнь-Июль", "location": "с. Харыялаах (Кэнтик)", "supervisor": ["И. А. Стенин", "А. А. Козлов"], "notes": "NA"}, {"language": ["Шугнанский"], "time": "Июнь-Июль", "location": "г. Хорог, Горно-Бадахшанская автономная область (Таджикистан)", "supervisor": ["Е.В. Рахилина", "В. А. Плунгян", "Е. Е. Арманд"], "notes": "NA"}, {"language": ["Хантыйский"], "time": "Апрель", "location": "с. Казым Белоярского района ХМАО-Югра, с. Юильск", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Хантыйский"], "time": "Июль", "location": "с. Казым Белоярского района ХМАО-Югра, с. Юильск", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Чукотский"], "time": "Август", "location": "с. Амгуэма Иультинского района Чукотского автономного округа", "supervisor": ["И. А. Стенин"], "notes": "NA"}, {"language": ["Рутульский"], "time": "Июль", "location": "Села Рутульского района + Хнов (Ахтынский район)", "supervisor": ["Н. Р. Добрушина", "Г. М. Мороз"], "notes": "NA"}, {"language": ["Эвенский"], "time": "Июнь-Июль", "location": "Эссо, Анавгай", "supervisor": ["А. И. Виняр"], "notes": "NA"}, {"language": ["Саамский"], "time": "Август", "location": "Ловозеро, Мурманская область", "supervisor": ["А. Бузанов"], "notes": "NA"}]}, {"year": 2023, "expeditions": [{"language": ["Хантыйский"], "time": "Апрель", "location": "с. Казым Белоярского района ХМАО-Югра", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Хантыйский"], "time": "Октябрь-Ноябрь", "location": "с. Казым Белоярского района ХМАО-Югра", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Лесной ненецкий"], "time": "Июнь-Август", "location": "с. Харампур и г. Тарко-Сале, ЯНАО", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Чукотский"], "time": "Июнь-Июль", "location": "с. Амгуэма Иультинского района Чукотского автономного округа", "supervisor": ["И. А. Стенин"], "notes": "NA"}, {"language": ["Шугнанский"], "time": "Июнь-Июль", "location": "г. Хорог, Горно-Бадахшанская автономная область (Таджикистан)", "supervisor": ["Е.В. Рахилина", "В.А. Плунгян", "Е.Е. Арманд"], "notes": "NA"}, {"language": ["Эвенский", "Корякский"], "time": "Август", "location": "Эссо и Анавгай, Камчатский край", "supervisor": ["А. И. Виняр"], "notes": "NA"}, {"language": ["Якутский"], "time": "Август", "location": "с. Столбы (Хатырык) Намского улуса РС(Я)", "supervisor": ["А. А. Козлов"], "notes": "NA"}]}, {"year": 2024, "expeditions": [{"language": ["Хантыйский"], "time": "Апрель", "location": "с. Казым Белоярского района ХМАО-Югра", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Лесной ненецкий"], "time": "Июль", "location": "с. Харампур и г. Тарко-Сале, ЯНАО", "supervisor": ["С. Ю. Толдова", "А. А. Козлов"], "notes": "NA"}, {"language": ["Шугнанский"], "time": "Июнь-Июль", "location": "г. Хорог, Горно-Бадахшанская автономная область (Таджикистан)", "supervisor": ["Е. В. Рахилина", "В. А. Плунгян", "Е. Е. Арманд"], "notes": "NA"}, {"language": ["Эвенский", "Корякский"], "time": "Август", "location": "Эссо и Анавгай, Камчатский край", "supervisor": ["А. И. Виняр"], "notes": "NA"}, {"language": ["Якутский"], "time": "Август", "location": "с. Столбы (Хатырык) Намского улуса РС(Я)", "supervisor": ["А. А. Козлов"], "notes": "NA"}]}];
+
+    const allExpeditions = {};
+    jsonData.forEach(entry => {
+        const year = entry.year;
+        const expeditions = entry.expeditions.map(expedition => {
+            const languages = expedition.language.join(", ");
+            const time = expedition.time;
+            const location = expedition.location;
+            return `${languages} (${time}; ${location})`;
+        });
+        allExpeditions[year] = expeditions;
+    });
+
+    let sectionCount = 0; // Инициализация счетчика секций
 
     function addSection() {
-        sectionCount++;
-        const container = document.getElementById('sections-container');
-        const sectionHTML = `
-            <div class="section">
-                <div class="form-group">
-                    <label for="year_${sectionCount}" style="font-family:georgia">Выберите год:</label>
-                    <select id="year_${sectionCount}" name="year_${sectionCount}">
-                        <option value="2012">2012</option>
-                        <option value="2013">2013</option>
-                        <option value="2014">2014</option>
-                        <option value="2015">2015</option>
-                        <option value="2016">2016</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                    </select>
-                </div>
+        const sectionsContainer = document.getElementById('sections-container');
+        const newSection = document.createElement('div');
+        newSection.classList.add('section');
+
+        newSection.innerHTML = `
+            <div class="form-group">
+                <label>Выберите год:</label>
+                <select class="year" name="year_${sectionCount++}" onchange="updateExpeditions(this)">
+                    <option value="">-- Выберите год --</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                </select>
             </div>
+            <div class="expeditions-container" style="margin-top: 20px;"></div>
         `;
-        container.insertAdjacentHTML('beforeend', sectionHTML);
+
+        sectionsContainer.appendChild(newSection);
     }
+
+    function updateExpeditions(selectElement) {
+        const selectedYear = selectElement.value;
+        const expeditionsContainer = selectElement.parentElement.nextElementSibling;
+
+        expeditionsContainer.innerHTML = '';
+
+        if (selectedYear && allExpeditions[selectedYear]) {
+            const expeditions = allExpeditions[selectedYear];
+            if (expeditions.length > 0) {
+                expeditionsContainer.innerHTML += `<h3>Выберите экспедиции года ${selectedYear}:</h3>`;
+                expeditions.forEach(expedition => {
+                    expeditionsContainer.innerHTML += `
+                        <div>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 18px">
+                                <tr>
+                                    <td style="width: 10%; border: none; text-align: center;">
+                                        <label>
+                                            <input type="checkbox" name="expeditions[]" value="${expedition}">
+                                        </label>
+                                    </td>
+                                    <td style="border: none;">${expedition}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    `;
+                });
+
+                // Добавляем вариант "Другое"
+                expeditionsContainer.innerHTML += `
+                    <div>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 18px">
+                            <tr>
+                                <td style="width: 10%; border: none; text-align: center;">
+                                    <label>
+                                        <input type="checkbox" name="expeditions[]" value="Другое" onclick="toggleOtherInput(this)">
+                                    </label>
+                                </td>
+                                <td style="border: none;">
+                                    Другое:
+                                    <br>
+                                    <textarea name="other_expedition" class="other-input" placeholder="Введите ваш вариант" oninput="this.value = this.value.trim()" style="width: 90%; height: 75px; display: none;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+            } else {
+                expeditionsContainer.innerHTML = `<p>Нет доступных экспедиций для выбранного года.</p>`;
+            }
+        }
+    }
+
+    function toggleOtherInput(checkbox) {
+        const inputField = checkbox.closest('tr').querySelector('.other-input');
+        if (inputField) {
+          inputField.style.display = checkbox.checked ? 'inline' : 'none';
+        }
+    }
+
 </script>
+
 
 {% endblock %}

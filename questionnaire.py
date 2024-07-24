@@ -266,15 +266,6 @@ def expedition():
 
 @app.route('/expedition_data', methods=['POST'])
 def expedition_data():
-    expedition_data = {}
-    section_count = 1
-    while True:
-        year = request.form.get(f'year_{section_count}')
-        if not year:
-            break
-
-    expedition_data[year] = {
-    }
     return render_template('important.html')
 
 
@@ -345,7 +336,6 @@ def stories_data():
 def what_shl_is():
     answer = request.form.get('answer')
     return render_template('thanks.html')
-
 
 
 if __name__ == '__main__':

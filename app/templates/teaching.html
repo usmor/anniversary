@@ -3,6 +3,7 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
+
 <style>
     body {
         font-family: georgia;
@@ -26,12 +27,12 @@
         margin: 0 auto;
     }
 </style>
-
 <div class="contact-bar">
 <div class="form-container">
     <form action="/teaching_status" method="POST">
+        <h1 style="font-family:georgia; font-size: 24px">Вы преподаете или преподавали в Школе Лингвистики?</h1>
+        <br>
         <div class="form-group">
-            <label for="q1" style="font-family:georgia">Вы преподаете или преподавали в Школе Лингвистики?</label>
             <select class="form-control" name="teaching_status" id="q1">
                 <option>Да</option>
                 <option>Нет</option>

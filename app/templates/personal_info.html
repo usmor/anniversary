@@ -29,22 +29,33 @@
 
 <div class="contact-bar">
     <div class="form-container">
-        <form action="/personal_info" method="POST">
+        <form action="/personal_info" method="POST"  enctype="multipart/form-data">
             <br>
             <h3 style="font-family:georgia"><b>О себе</b></h3>
             <div class="form-group">
-                <label for="q1" style="font-family:georgia">Фамилия</label>
-                <input type="text" class="form-control" name="surname" id="q1" placeholder="Якобсон">
+                <label for="surname" style="font-family:georgia">Фамилия</label>
+                <input required type="text" class="form-control" name="surname" id="surname" placeholder="Якобсон">
             </div>
             <br>
             <div class="form-group">
-                <label for="q2" style="font-family:georgia">Имя</label>
-                <input type="text" class="form-control" name="name" id="q2" placeholder="Роман">
+                <label for="name" style="font-family:georgia">Имя</label>
+                <input required type="text" class="form-control" name="name" id="name" placeholder="Роман">
             </div>
             <br>
             <div class="form-group">
-                <label for="q3" style="font-family:georgia">Отчество (при наличии)</label>
-                <input type="text" class="form-control" name="second_name" id="q3" placeholder="Осипович">
+                <label for="second_name" style="font-family:georgia">Отчество</label>
+                <p><i>при отсутствии поставьте прочерк</i></p>
+                <input required type="text" class="form-control" name="second_name" id="second_name" placeholder="Осипович">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="address" style="font-family:georgia">Адрес для обратной связи</label>
+                <input type="text" class="form-control" name="address" id="address" placeholder="tg: @linguist">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="photo" style="font-family:georgia">Ваша фотография</label>
+                <input type="file" class="form-control-file" name="photo" id="photo">
             </div>
             <br>
             <div class="text-center">

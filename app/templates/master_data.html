@@ -3,57 +3,7 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        font-family: georgia;
-        font-size: 18px;
-    }
-    .contact-bar {
-        background-color: #F8F32B;
-        color: #000000;
-        text-align: center;
-        padding: 10px 0;
-    }
-    .form-container {
-        background-color: #8D99AE;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px auto;
-        max-width: 1000px;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-    }
-    .form-group input,
-    .form-group select {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-    }
-    .btn {
-        background-color: #2b2d42;
-        color: #ffffff;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-    }
-    .btn:hover {
-        background-color: #3d5a5a;
-    }
-    .section {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #C3CAD5;
-        border: 1px solid #dddddd;
-    }
-    .section + .section {
-        margin-top: 20px;
-    }
-</style>
+
 
 <div class="contact-bar">
     <div class="form-container">
@@ -78,6 +28,10 @@
                 <div class="form-group">
                     <label for="master_end_year_1" style="font-family:georgia">Год окончания обучения:</label>
                     <input type="text" class="form-control" name="master_end_year_1" id="master_end_year_1" placeholder="1904">
+                </div>
+                <div class="form-group">
+                    <label for="master_curator_1" style="font-family:georgia">ФИО научного руководителя дипломной работы:</label>
+                    <input type="text" class="form-control" name="master_curator_1" id="master_curator_1" placeholder="Петров Петр Петрович">
                 </div>
             </div>
         </div>
@@ -114,6 +68,10 @@
                 <div class="form-group">
                     <label for="master_end_year_${sectionCount}" style="font-family:georgia">Год окончания обучения:</label>
                     <input type="text" class="form-control" name="master_end_year_${sectionCount}" id="master_end_year_${sectionCount}" placeholder="1904">
+                </div>
+                <div class="form-group">
+                    <label for="master_curator_${sectionCount}" style="font-family:georgia">ФИО научного руководителя дипломной работы:</label>
+                    <input type="text" class="form-control" name="master_curator_${sectionCount}" id="master_curator_${sectionCount}" placeholder="Петров Петр Петрович">
                 </div>
             </div>
         `;

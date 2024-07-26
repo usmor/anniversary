@@ -245,27 +245,31 @@ def research_data():
 
 @person_routes.route('/internships', methods=['POST'])
 def internships_data():
-    intern_data = {}
-    section_count = 1
-    while True:
-        intern_place = request.form.get(f'intern_place_{section_count}')
-        intern_year = request.form.get(f'intern_year_{section_count}')
+    respondent_id = session.get('respondent_id')
+    sections = [key.split('_')[2] for key in request.form.keys()
+                if key.startswith('intern_place_')]
+    for section in sections:
+        stage_name = request.form.get(f'intern_place_{section}')
+        stage_year = request.form.get(f'intern_year_{section}')
 
-        if not intern_place and not intern_year:
-            break
-
-    intern_data[f'internship_{section_count}'] = {
-        'intern_place': intern_place,
-        'intern_year': intern_year
-    }
-
+        new_stage = Stages(pers_id=respondent_id,
+                           year=stage_year,
+                           stage=stage_name)
+        db.session.add(new_stage)
+        db.session.commit()
     return render_template('now.html')
 
 
 @person_routes.route('/now', methods=['POST'])
 def now():
+    respondent_id = session.get('respondent_id')
     current_city = request.form.get('current_city')
     current_workplace = request.form.get('current_workplace')
+    new_current = CurrentAddresses(pers_id=respondent_id,
+                                   address=current_city,
+                                   position=current_workplace)
+    db.session.add(new_current)
+    db.session.commit()
     return render_template('expedition.html')
 
 

@@ -47,6 +47,19 @@ class Stages(db.Model):
     stage = db.Column(db.String, nullable=True)
 
 
+class CurrentAddresses(db.Model):
+    __tablename__ = "CurrentAddresses"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    address = db.Column(db.String, nullable=True)
+    position = db.Column(db.String, nullable=True)
+
+
+class ExpeditionsParticipation(db.Model):
+    __tablename__ = "ExpeditionsParticipation"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    expeditions = db.Column(db.String, nullable=True)
 # class InstitutionType(db.Model):  # презабить
 #     __tablename__ = "InstitutionType"
 #     id = db.Column(db.Integer, primary_key=True)

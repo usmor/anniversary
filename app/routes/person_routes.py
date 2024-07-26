@@ -191,6 +191,7 @@ def research():
 
 @person_routes.route('/teaching_data', methods=['POST'])
 def teaching_data():
+    respondent_id = session.get('respondent_id')
     programs_list = request.form.getlist('courses')
     year_start = request.form.get('teaching_start_year')
     year_fin = request.form.get('teaching_end_year')
@@ -206,6 +207,7 @@ def teaching_data():
 
 @person_routes.route('/management_data', methods=['POST'])
 def management_data():
+    respondent_id = session.get('respondent_id')
     institutions = request.form.getlist('institution')
     other_institution = request.form.get('other_institution', '')
     if 'Другое' in institutions:
@@ -227,6 +229,7 @@ def management_data():
 
 @person_routes.route('/research_data', methods=['POST'])
 def research_data():
+    respondent_id = session.get('respondent_id')
     research_groups = request.form.getlist('research_groups')
     year_start = request.form.get('research_start_year')
     year_fin = request.form.get('research_end_year')

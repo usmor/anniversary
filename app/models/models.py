@@ -11,6 +11,12 @@ class Person(db.Model):
     photo_filename = db.Column(db.String, nullable=True)
     status = db.relationship('StatusPerson', backref='Person', lazy=True)
     stage = db.relationship('Stages', backref='Person', lazy=True)
+    current = db.relationship('CurrentAddresses', backref='Person', lazy=True)
+    expeditions = db.relationship('ExpeditionsParticipation', backref='Person', lazy=True)
+    userprojects = db.relationship('UserProjects', backref='Person', lazy=True)
+    links = db.relationship('CrowdSourceLinks', backref='Person', lazy=True)
+    stories = db.relationship('CrowdSourceStories', backref='Person', lazy=True)
+    emotional = db.relationship('EmotionalSchl', backref='Person', lazy=True)
     # institution = db.relationship(
     #     'PersonInstitution',
     #     backref='Person',
@@ -60,6 +66,39 @@ class ExpeditionsParticipation(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
     expeditions = db.Column(db.String, nullable=True)
+
+
+class UserProjects(db.Model):
+    __tablename__ = "UserProjects"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    project_info = db.Column(db.String, nullable=True)
+
+
+class CrowdSourceLinks(db.Model):
+    __tablename__ = "CrowdSourceLinks"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    contact = db.Column(db.String, nullable=True)
+    link = db.Column(db.String, nullable=True)
+    description = db.Column(db.String, nullable=True)
+
+
+class CrowdSourceStories(db.Model):
+    __tablename__ = "CrowdSourceStories"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    contact = db.Column(db.String, nullable=True)
+    story = db.Column(db.String, nullable=True)
+
+
+class EmotionalSchl(db.Model):
+    __tablename__ = "EmotionalSchl"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    content = db.Column(db.String, nullable=True)
+
+
 # class InstitutionType(db.Model):  # презабить
 #     __tablename__ = "InstitutionType"
 #     id = db.Column(db.Integer, primary_key=True)

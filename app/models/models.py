@@ -35,6 +35,7 @@ class StatusPerson(db.Model):
     program = db.Column(db.String)
     curator = db.Column(db.String)
 
+
 class Stages(db.Model):
     __tablename__ = "Stages"
     id = db.Column(db.Integer, primary_key=True)

@@ -4,27 +4,13 @@ from flask import Blueprint, render_template, request, current_app
 from app import db
 from app.models.models import *
 
-person_routes = Blueprint('routes', __name__)
 
-
-@person_routes.route('/')
-def main():
-    return render_template('main.html')
+person_routes = Blueprint('person_routes', __name__)
 
 
 @person_routes.route('/person')
 def person():
     return render_template('personal_info.html')
-
-
-# @person_routes.route('/event')
-# def event():
-#     return render_template('event.html')
-
-
-@person_routes.route('/contacts')
-def contacts():
-    return render_template('contacts.html')
 
 
 @person_routes.route('/personal_info', methods=['POST'])

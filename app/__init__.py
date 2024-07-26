@@ -12,7 +12,9 @@ def create_app():
 
     db.init_app(app)
 
+    from app.routes.main_routes import main_routes as main_routes_blueprint
     from app.routes.person_routes import person_routes as person_routes_blueprint
+    app.register_blueprint(main_routes_blueprint)
     app.register_blueprint(person_routes_blueprint)
 
     with app.app_context():

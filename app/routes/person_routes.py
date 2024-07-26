@@ -256,7 +256,8 @@ def internships_data():
                            year=stage_year,
                            stage=stage_name)
         db.session.add(new_stage)
-        db.session.commit()
+
+    db.session.commit()
     return render_template('now.html')
 
 
@@ -312,10 +313,15 @@ def memories():
 def memories_data():
     respondent_id = session.get('respondent_id')
     response = request.form.get('response')
-    if db.session.query(Person.contact).filter_by(id=respondent_id).one()[0]:
-        address = db.session.query(Person.contact).filter_by(id=respondent_id).one()[0]
+    current_address = db.session.query(
+        Person.contact).filter_by(
+            id=respondent_id).one()[0]
+
+    if current_address:
+        address = current_address
     else:
         address = None
+
     if response == 'Поделюсь сейчас':
         link = request.form.get('link')
         description = request.form.get('description')
@@ -330,21 +336,17 @@ def memories_data():
         contact_method = request.form.get('contact-method')
         link = 'to be added'
         description = 'to be added'
-        if contact_method == 'По тому адресу, который был указан мною ранее':
-            new_link = CrowdSourceLinks(pers_id=respondent_id,
-                                        contact=address,
-                                        link=link,
-                                        description=description)
-            db.session.add(new_link)
-            db.session.commit()
-        elif contact_method == 'Указать новый адрес':
-            new_address = request.form.get('new_address')
-            new_link = CrowdSourceLinks(pers_id=respondent_id,
-                                        contact=new_address,
-                                        link=link,
-                                        description=description)
-            db.session.add(new_link)
-            db.session.commit()
+
+        if contact_method == 'Указать новый адрес':
+            address = request.form.get('new_address')
+
+        new_link = CrowdSourceLinks(pers_id=respondent_id,
+                                    contact=address,
+                                    link=link,
+                                    description=description)
+        db.session.add(new_link)
+        db.session.commit()
+
     return render_template('stories.html')
 
 
@@ -360,10 +362,15 @@ def stories():
 def stories_data():
     respondent_id = session.get('respondent_id')
     response = request.form.get('response')
-    if db.session.query(Person.contact).filter_by(id=respondent_id).one()[0]:
-        address = db.session.query(Person.contact).filter_by(id=respondent_id).one()[0]
+    current_address = db.session.query(
+        Person.contact).filter_by(
+            id=respondent_id).one()[0]
+
+    if current_address:
+        address = current_address
     else:
         address = None
+
     if response == 'Поделюсь сейчас':
         story = request.form.get('story')
         new_story = CrowdSourceStories(pers_id=respondent_id,
@@ -374,20 +381,16 @@ def stories_data():
     elif response == 'Свяжитесь со мной позже':
         contact_method = request.form.get('contact-method')
         story = 'to be added'
-        if contact_method == 'По тому адресу, который был указан мною ранее':
-            new_story = CrowdSourceStories(pers_id=respondent_id,
-                                           contact=address,
-                                           story=story)
-            db.session.add(new_story)
-            db.session.commit()
-            pass
-        elif contact_method == 'Указать новый адрес':
-            new_address = request.form.get('new_address')
-            new_story = CrowdSourceStories(pers_id=respondent_id,
-                                           contact=new_address,
-                                           story=story)
-            db.session.add(new_story)
-            db.session.commit()
+
+        if contact_method == 'Указать новый адрес':
+            address = request.form.get('new_address')
+
+        new_story = CrowdSourceStories(pers_id=respondent_id,
+                                       contact=address,
+                                       story=story)
+        db.session.add(new_story)
+        db.session.commit()
+
     return render_template('what_shl_is.html')
 
 

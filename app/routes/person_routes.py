@@ -1,7 +1,8 @@
 import os
 
 from flask import Blueprint, render_template, request, current_app
-
+from app import db
+from app.models.models import *
 
 person_routes = Blueprint('routes', __name__)
 
@@ -32,7 +33,7 @@ def get_personal_info():
     name = request.form.get('name')
     second_name = request.form.get('second_name', '')
 
-    address = request.form.get('address')
+    contact = request.form.get('address')
 
     if not os.path.exists(current_app.config['UPLOAD_FOLDER']):
         os.makedirs(current_app.config['UPLOAD_FOLDER'])
@@ -50,6 +51,15 @@ def get_personal_info():
         except Exception as e:
             print(
                 f"Ошибка при сохранении фотографии {photo.filename} у пользователя по имени {initials}: {e}")
+    new_person = Person(surname=surname,
+                        name=name,
+                        second_name=second_name,
+                        contact=contact,
+                        photo_filename=photo_name)
+    db.session.add(new_person)
+    db.session.commit()
+    global respondent_id
+    respondent_id = new_person.id
 
     return render_template('student.html')
 
@@ -88,79 +98,53 @@ def phd():
 
 @person_routes.route('/bachelor_data', methods=['POST'])
 def bachelor_data():
-    bachelor_data = {}
-    section_count = 1
-
-    while True:
-        bach_program = request.form.get(f'bach_program_{section_count}')
-        bach_start_year = request.form.get(f'bach_start_year_{section_count}')
-        bach_end_year = request.form.get(f'bach_end_year_{section_count}')
-        bach_curator = request.form.get(f'bach_curator_{section_count}')
-
-        if not bach_program and not bach_start_year and not bach_end_year and not bach_curator:
-            break
-
-        bachelor_data[f'bachelor_degree_{section_count}'] = {
-            'bach_program': bach_program,
-            'bach_start_year': bach_start_year,
-            'bach_end_year': bach_end_year,
-            'bach_curator': bach_curator
-        }
-
-        section_count += 1
-
+    program = request.form.get('bach_program_1')
+    year_start = request.form.get('bach_start_year_1')
+    year_fin = request.form.get('bach_end_year_1')
+    curator = request.form.get('bach_curator_1')
+    new_bach = StatusPerson(pers_id=respondent_id,
+                            program=program,
+                            stat_id=1,
+                            year_start=year_start,
+                            year_fin=year_fin,
+                            curator=curator)
+    db.session.add(new_bach)
+    db.session.commit()
     return render_template('master.html')
 
 
 @person_routes.route('/master_data', methods=['POST'])
 def master_data():
-    master_data = {}
-    section_count = 1
-
-    while True:
-        master_program = request.form.get(f'master_program_{section_count}')
-        master_start_year = request.form.get(
-            f'master_start_year_{section_count}')
-        master_end_year = request.form.get(f'master_end_year_{section_count}')
-        master_curator = request.form.get(f'master_curator_{section_count}')
-
-        if not master_program and not master_start_year and not master_end_year and not master_curator:
-            break
-
-        master_data[f'master_degree_{section_count}'] = {
-            'master_program': master_program,
-            'master_start_year': master_start_year,
-            'master_end_year': master_end_year,
-            'master_curator': master_curator
-        }
-
-        section_count += 1
+    program = request.form.get('master_program_1')
+    year_start = request.form.get('master_start_year_1')
+    year_fin = request.form.get('master_end_year_1')
+    curator = request.form.get('master_curator_1')
+    new_master = StatusPerson(pers_id=respondent_id,
+                              program=program,
+                              stat_id=2,
+                              year_start=year_start,
+                              year_fin=year_fin,
+                              curator=curator)
+    db.session.add(new_master)
+    db.session.commit()
 
     return render_template('phd.html')
 
 
 @person_routes.route('/phd_data', methods=['POST'])
 def phd_data():
-    phd_data = {}
-    section_count = 1
-
-    while True:
-        phd_program = request.form.get(f'phd_program_{section_count}')
-        phd_start_year = request.form.get(f'phd_start_year_{section_count}')
-        phd_end_year = request.form.get(f'phd_end_year_{section_count}')
-        phd_curator = request.form.get(f'phd_curator_{section_count}')
-
-        if not phd_program and not phd_start_year and not phd_end_year and not phd_curator:
-            break
-
-        phd_data[f'phd_degree_{section_count}'] = {
-            'phd_program': phd_program,
-            'post_start_year': phd_start_year,
-            'post_end_year': phd_end_year,
-            'phd_curator': phd_curator
-        }
-
-        section_count += 1
+    program = request.form.get('phd_program_1')
+    year_start = request.form.get('phd_start_year_1')
+    year_fin = request.form.get('phd_end_year_1')
+    curator = request.form.get('phd_curator_1')
+    new_phd = StatusPerson(pers_id=respondent_id,
+                           program=program,
+                           stat_id=3,
+                           year_start=year_start,
+                           year_fin=year_fin,
+                           curator=curator)
+    db.session.add(new_phd)
+    db.session.commit()
 
     return render_template('employee.html')
 
@@ -205,9 +189,16 @@ def research():
 
 @person_routes.route('/teaching_data', methods=['POST'])
 def teaching_data():
-    courses = request.form.getlist('courses')
-    teaching_start_year = request.form.get('teaching_start_year')
-    teaching_end_year = request.form.get('teaching_end_year')
+    programs_list = request.form.getlist('courses')
+    year_start = request.form.get('teaching_start_year')
+    year_fin = request.form.get('teaching_end_year')
+    new_teacher = StatusPerson(pers_id=respondent_id,
+                               program=' '.join(programs_list),
+                               stat_id=4,
+                               year_start=year_start,
+                               year_fin=year_fin)
+    db.session.add(new_teacher)
+    db.session.commit()
     return render_template('management.html')
 
 
@@ -219,8 +210,15 @@ def management_data():
         institutions.remove('Другое')
         institutions.append(other_institution)
 
-    management_start_year = request.form.get('management_start_year')
-    management_end_year = request.form.get('management_end_year')
+    year_start = request.form.get('management_start_year')
+    year_fin = request.form.get('management_end_year')
+    new_manager = StatusPerson(pers_id=respondent_id,
+                               program=' '.join(institutions),
+                               stat_id=5,
+                               year_start=year_start,
+                               year_fin=year_fin)
+    db.session.add(new_manager)
+    db.session.commit()
 
     return render_template('research.html')
 
@@ -228,8 +226,15 @@ def management_data():
 @person_routes.route('/research_data', methods=['POST'])
 def research_data():
     research_groups = request.form.getlist('research_groups')
-    research_start_year = request.form.get('research_start_year')
-    research_end_year = request.form.get('research_end_year')
+    year_start = request.form.get('research_start_year')
+    year_fin = request.form.get('research_end_year')
+    new_laborant = StatusPerson(pers_id=respondent_id,
+                                program=' '.join(research_groups),
+                                stat_id=6,
+                                year_start=year_start,
+                                year_fin=year_fin)
+    db.session.add(new_laborant)
+    db.session.commit()
     return render_template('internships.html')
 
 

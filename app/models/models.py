@@ -3,12 +3,12 @@ from app import db
 
 class Person(db.Model):
     __tablename__ = "Person"
-    id = db.Column(db.Integer, primary_key=True)
-    surname = db.Column(db.String)
-    name = db.Column(db.String)
-    second_name = db.Column(db.String)
-    contact = db.Column(db.String)
-    photo_filename = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    surname = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    second_name = db.Column(db.String, nullable=True)
+    contact = db.Column(db.String, nullable=True)
+    photo_filename = db.Column(db.String, nullable=True)
     status = db.relationship('StatusPerson', backref='Person', lazy=True)
     stage = db.relationship('Stages', backref='Person', lazy=True)
     # institution = db.relationship(
@@ -20,28 +20,31 @@ class Person(db.Model):
 
 class StatusList(db.Model):
     __tablename__ = "StatusList"
-    id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    status = db.Column(db.String, nullable=False)
     sp = db.relationship('StatusPerson', backref='StatusList', lazy=True)
 
 
 class StatusPerson(db.Model):
     __tablename__ = "StatusPerson"
-    id = db.Column(db.Integer, primary_key=True)
-    stat_id = db.Column(db.Integer, db.ForeignKey("StatusList.id"))
-    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"))
-    year_start = db.Column(db.Integer)
-    year_fin = db.Column(db.Integer)
-    program = db.Column(db.String)
-    curator = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    stat_id = db.Column(
+        db.Integer,
+        db.ForeignKey("StatusList.id"),
+        nullable=False)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    year_start = db.Column(db.Integer, nullable=True)
+    year_fin = db.Column(db.Integer, nullable=True)
+    program = db.Column(db.String, nullable=True)
+    curator = db.Column(db.String, nullable=True)
 
 
 class Stages(db.Model):
     __tablename__ = "Stages"
-    id = db.Column(db.Integer, primary_key=True)
-    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"))
-    year = db.Column(db.Integer)
-    stage = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    year = db.Column(db.Integer, nullable=True)
+    stage = db.Column(db.String, nullable=True)
 
 
 # class InstitutionType(db.Model):  # презабить

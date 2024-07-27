@@ -167,9 +167,11 @@ def connection():
     db.session.add(new_status)
     db.session.commit()
 
-    new_status_person = StatusPerson(pers_id=respondent_id,
-                                     stat_id=db.session.query(StatusList.id).filter_by(status=connect).one()[0]
-                                     )
+    new_status_person = StatusPerson(
+        pers_id=respondent_id,
+        stat_id=db.session.query(
+            StatusList.id).filter_by(
+            status=connect).one()[0])
     db.session.add(new_status_person)
     db.session.commit()
     return render_template('now.html')
@@ -295,10 +297,24 @@ def expedition():
 @person_routes.route('/expedition_data', methods=['POST'])
 def expedition_data():
     respondent_id = session.get('respondent_id')
-    for exp in request.form.getlist('expeditions[]'):
-        new_exp = ExpeditionsParticipation(pers_id=respondent_id,
-                                           expeditions=exp)
-        db.session.add(new_exp)
+
+    form_data = request.form
+    sections = [key.split('_')[1]
+                for key in form_data.keys() if key.startswith('year_')]
+
+    for section in sections:
+        selected_year = form_data.get(f'year_{section}')
+        if selected_year:
+            expeditions = form_data.getlist(f'expeditions_{section}[]')
+
+            for exp in expeditions:
+                new_exp = ExpeditionsParticipation(
+                    pers_id=respondent_id,
+                    year=int(selected_year),
+                    expeditions=exp
+                )
+                db.session.add(new_exp)
+
     db.session.commit()
     return render_template('important.html')
 

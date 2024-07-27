@@ -12,10 +12,16 @@ class Person(db.Model):
     status = db.relationship('StatusPerson', backref='Person', lazy=True)
     stage = db.relationship('Stages', backref='Person', lazy=True)
     current = db.relationship('CurrentAddresses', backref='Person', lazy=True)
-    expeditions = db.relationship('ExpeditionsParticipation', backref='Person', lazy=True)
+    expeditions = db.relationship(
+        'ExpeditionsParticipation',
+        backref='Person',
+        lazy=True)
     userprojects = db.relationship('UserProjects', backref='Person', lazy=True)
     links = db.relationship('CrowdSourceLinks', backref='Person', lazy=True)
-    stories = db.relationship('CrowdSourceStories', backref='Person', lazy=True)
+    stories = db.relationship(
+        'CrowdSourceStories',
+        backref='Person',
+        lazy=True)
     emotional = db.relationship('EmotionalSchl', backref='Person', lazy=True)
     # institution = db.relationship(
     #     'PersonInstitution',
@@ -65,6 +71,7 @@ class ExpeditionsParticipation(db.Model):
     __tablename__ = "ExpeditionsParticipation"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    year = db.Column(db.Integer, nullable=False)
     expeditions = db.Column(db.String, nullable=True)
 
 

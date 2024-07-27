@@ -284,6 +284,12 @@ def expedition():
 
 @person_routes.route('/expedition_data', methods=['POST'])
 def expedition_data():
+    respondent_id = session.get('respondent_id')
+    for exp in request.form.getlist('expeditions[]'):
+        new_exp = ExpeditionsParticipation(pers_id=respondent_id,
+                                           expeditions=exp)
+        db.session.add(new_exp)
+    db.session.commit()
     return render_template('important.html')
 
 

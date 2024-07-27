@@ -161,7 +161,17 @@ def employee():
 
 @person_routes.route('/connection', methods=['POST'])
 def connection():
-    connect = request.form.get('connection')
+    respondent_id = session.get('respondent_id')
+    connect = request.form.get('answer')
+    new_status = StatusList(status=connect)
+    db.session.add(new_status)
+    db.session.commit()
+
+    new_status_person = StatusPerson(pers_id=respondent_id,
+                                     stat_id=db.session.query(StatusList.id).filter_by(status=connect).one()[0]
+                                     )
+    db.session.add(new_status_person)
+    db.session.commit()
     return render_template('now.html')
 
 

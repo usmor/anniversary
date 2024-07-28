@@ -306,6 +306,13 @@ def expedition_data():
         selected_year = form_data.get(f'year_{section}')
         if selected_year:
             expeditions = form_data.getlist(f'expeditions_{section}[]')
+            other_expedition = form_data.get(
+                f'other_exp_{section}', '').strip()
+
+            if 'Другое' in expeditions:
+                expeditions.remove('Другое')
+                if other_expedition:
+                    expeditions.append(other_expedition)
 
             for exp in expeditions:
                 new_exp = ExpeditionsParticipation(

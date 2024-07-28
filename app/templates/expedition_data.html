@@ -143,13 +143,13 @@
                             <tr>
                                 <td style="width: 10%; border: none; text-align: center;">
                                     <label>
-                                        <input type="checkbox" name="expeditions_${number}[]" value="Другое" onclick="toggleOtherInput(this)">
+                                        <input type="checkbox" name="expeditions_${number}[]" value="Другое" onclick="toggleOtherInput(this, ${number})">
                                     </label>
                                 </td>
                                 <td style="border: none;">
                                     Другое
                                     <br>
-                                    <textarea name="other_exp_${number}[]" class="other-input" placeholder="Введите ваш вариант" oninput="updateOtherExpeditions(this, event)" style="width: 90%; height: 75px; display: none;"></textarea>
+                                    <textarea name="other_exp_${number}" class="other-input" placeholder="Введите ваш вариант" oninput="updateOtherExpeditions(this, ${number})" style="width: 90%; height: 75px; display: none;"></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -161,29 +161,38 @@
         }
     }
 
-    function toggleOtherInput(checkbox) {
-        const textarea = checkbox.parentElement.parentElement.querySelector('.other-input');
+    function toggleOtherInput(checkbox, number) {
+        const textarea = checkbox.closest('tr').querySelector('.other-input');
         textarea.style.display = checkbox.checked ? 'block' : 'none';
         if (!checkbox.checked) {
             textarea.value = '';
+            updateOtherExpeditions(textarea, number);
         }
     }
 
-    function updateOtherExpeditions(textarea, event) {
+    function updateOtherExpeditions(textarea, number) {
         const value = textarea.value.trim();
-        const checkbox = textarea.parentElement.previousElementSibling.querySelector('input[type="checkbox"]');
+        const checkbox = textarea.closest('tr').querySelector('input[type="checkbox"]');
+
+        if (!window.other_expeditions) {
+            window.other_expeditions = {};
+        }
+        if (!window.other_expeditions[number]) {
+            window.other_expeditions[number] = [];
+        }
 
         // Проверяем, установлен ли чекбокс "Другое"
         if (checkbox.checked && value) {
-            if (!other_expeditions.includes(value)) {
-                other_expeditions.push(value);
+            if (!window.other_expeditions[number].includes(value)) {
+                window.other_expeditions[number].push(value);
             }
         } else {
-            const index = other_expeditions.indexOf(value);
+            const index = window.other_expeditions[number].indexOf(value);
             if (index !== -1) {
-                other_expeditions.splice(index, 1);
+                window.other_expeditions[number].splice(index, 1);
             }
         }
+        console.log(`Other expeditions for ${number}:`, window.other_expeditions[number]);
     }
 </script>
 

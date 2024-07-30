@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+
 from config import Config
 
 
@@ -17,8 +18,23 @@ def create_app():
     app.register_blueprint(main_routes_blueprint)
     app.register_blueprint(person_routes_blueprint)
 
+    from app.models.models import StatusList
+
     with app.app_context():
         db.create_all()
         db.session.commit()
+
+        if StatusList.query.first() is None:
+            statuses = [
+                'Бакалавр',
+                'Магистрант',
+                'Аспирант',
+                'Преподаватель',
+                'Менеджер',
+                'Лаборант']
+            for stat in statuses:
+                new_status = StatusList(status=stat)
+                db.session.add(new_status)
+            db.session.commit()
 
     return app

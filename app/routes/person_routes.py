@@ -207,12 +207,13 @@ def teaching_data():
     programs_list = request.form.getlist('courses')
     year_start = request.form.get('teaching_start_year')
     year_fin = request.form.get('teaching_end_year')
-    new_teacher = StatusPerson(pers_id=respondent_id,
-                               program=' '.join(programs_list),
-                               stat_id=4,
-                               year_start=year_start,
-                               year_fin=year_fin)
-    db.session.add(new_teacher)
+    for program in programs_list:
+        new_teacher = StatusPerson(pers_id=respondent_id,
+                                   program=program,
+                                   stat_id=4,
+                                   year_start=year_start,
+                                   year_fin=year_fin)
+        db.session.add(new_teacher)
     db.session.commit()
     return render_template('management.html')
 
@@ -220,20 +221,21 @@ def teaching_data():
 @person_routes.route('/management_data', methods=['POST'])
 def management_data():
     respondent_id = session.get('respondent_id')
-    institutions = request.form.getlist('institution')
+    institutions_list = request.form.getlist('institution')
     other_institution = request.form.get('other_institution', '')
-    if 'Другое' in institutions:
-        institutions.remove('Другое')
-        institutions.append(other_institution)
+    if 'Другое' in institutions_list:
+        institutions_list.remove('Другое')
+        institutions_list.append(other_institution)
 
     year_start = request.form.get('management_start_year')
     year_fin = request.form.get('management_end_year')
-    new_manager = StatusPerson(pers_id=respondent_id,
-                               program=' '.join(institutions),
-                               stat_id=5,
-                               year_start=year_start,
-                               year_fin=year_fin)
-    db.session.add(new_manager)
+    for institution in institutions_list:
+        new_manager = StatusPerson(pers_id=respondent_id,
+                                   program=institution,
+                                   stat_id=5,
+                                   year_start=year_start,
+                                   year_fin=year_fin)
+        db.session.add(new_manager)
     db.session.commit()
 
     return render_template('research.html')
@@ -245,12 +247,13 @@ def research_data():
     research_groups = request.form.getlist('research_groups')
     year_start = request.form.get('research_start_year')
     year_fin = request.form.get('research_end_year')
-    new_laborant = StatusPerson(pers_id=respondent_id,
-                                program=' '.join(research_groups),
-                                stat_id=6,
-                                year_start=year_start,
-                                year_fin=year_fin)
-    db.session.add(new_laborant)
+    for group in research_groups:
+        new_laborant = StatusPerson(pers_id=respondent_id,
+                                    program=group,
+                                    stat_id=6,
+                                    year_start=year_start,
+                                    year_fin=year_fin)
+        db.session.add(new_laborant)
     db.session.commit()
     return render_template('internships.html')
 
@@ -318,7 +321,7 @@ def expedition_data():
                 new_exp = ExpeditionsParticipation(
                     pers_id=respondent_id,
                     year=int(selected_year),
-                    expeditions=exp
+                    expedition=exp
                 )
                 db.session.add(new_exp)
 

@@ -72,7 +72,7 @@ class ExpeditionsParticipation(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    expeditions = db.Column(db.String, nullable=True)
+    expedition = db.Column(db.String, nullable=True)
 
 
 class UserProjects(db.Model):

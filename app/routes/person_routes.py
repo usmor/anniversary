@@ -1,5 +1,4 @@
 import os
-
 from flask import Blueprint, render_template, request, current_app, session
 from app import db
 from app.models.models import *
@@ -85,16 +84,18 @@ def phd():
 @person_routes.route('/bachelor_data', methods=['POST'])
 def bachelor_data():
     respondent_id = session.get('respondent_id')
-    sections = [key.split('_')[2] for key in request.form.keys()
-                if key.startswith('bach_program_')]
+    # sections = [key.split('_')[2] for key in request.form.keys()
+    #             if key.startswith('bach_program_')]
+    sections = [key.split('_')[2] for key in request.form.keys() if key.startswith('bach_start_year_')]
+
     for section in sections:
-        program = request.form.get(f'bach_program_{section}')
+        # program = request.form.get(f'bach_program_{section}')
         year_start = request.form.get(f'bach_start_year_{section}')
         year_fin = request.form.get(f'bach_end_year_{section}')
         curator = request.form.get(f'bach_curator_{section}')
 
         new_bach = StatusPerson(pers_id=respondent_id,
-                                program=program,
+                                program='ФиКЛ',
                                 stat_id=1,
                                 year_start=year_start or None,
                                 year_fin=year_fin or None,
@@ -132,15 +133,15 @@ def master_data():
 def phd_data():
     respondent_id = session.get('respondent_id')
     sections = [key.split('_')[2] for key in request.form.keys()
-                if key.startswith('phd_program_')]
+                if key.startswith('phd_start_year_')]
     for section in sections:
-        program = request.form.get(f'phd_program_{section}')
+        # program = request.form.get(f'phd_program_{section}')
         year_start = request.form.get(f'phd_start_year_{section}')
         year_fin = request.form.get(f'phd_end_year_{section}')
         curator = request.form.get(f'phd_curator_{section}')
 
         new_phd = StatusPerson(pers_id=respondent_id,
-                               program=program,
+                               program='Аспирантская школа по филологическим наукам',
                                stat_id=3,
                                year_start=year_start or None,
                                year_fin=year_fin or None,

@@ -6,28 +6,30 @@
 
 <div class="contact-bar">
     <div class="form-container">
-    <form action="/internships" method="POST">
-        <h1 style="font-family:georgia; font-size: 24px">Проходили ли вы где-нибудь стажировку во время учебы / работы в ШЛ?</h1>
-        <p>Пример: <i>стажировка в Тромсё</i></p>
-        <div id="sections-container">
-            <div class="section">
-                <div class="form-group">
-                    <label for="intern_place_1" style="font-family:georgia">Укажите место:</label>
-                    <input type="text" class="form-control" name="intern_place_1" id="intern_place_1" placeholder="практика в Яндексе">
-                </div>
-                <div class="form-group">
-                    <label for="intern_year_1" style="font-family:georgia">Укажите год:</label>
-                    <input type="text" class="form-control" name="intern_year_1" id="intern_year_1" placeholder="2100">
+        <form action="/internships" method="POST">
+            <h1 style="font-family:georgia; font-size: 24px">Проходили ли вы где-нибудь стажировку во время учебы / работы в ШЛ?</h1>
+            <p>Пример: <i>стажировка в Тромсё</i></p>
+            <div id="sections-container">
+                <div class="section">
+                    <div class="form-group">
+                        <label for="intern_place_1" style="font-family:georgia">Укажите место:</label>
+                        <input type="text" class="form-control" name="intern_place_1" id="intern_place_1" placeholder="практика в Яндексе">
+                    </div>
+                    <div class="form-group">
+                        <label for="intern_year_1" style="font-family:georgia">Укажите год:</label>
+                        <input type="text" class="form-control" name="intern_year_1" id="intern_year_1" placeholder="2100">
+                    </div>
+                    <button type="button" class="btn" onclick="removeSection(this)">Удалить стажировку</button>
                 </div>
             </div>
-        </div>
-        <div class="text-center">
-            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
-            <button type="submit" class="btn">Следующая страница</button>
-        </div>
-    </form>
-    <br>
-    </div></div>
+            <div class="text-center">
+                <button type="button" class="btn" onclick="addSection()">Добавить стажировку</button>
+                <button type="submit" class="btn">Следующая страница</button>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
 
 <script>
     let sectionCount = 1;
@@ -45,9 +47,15 @@
                     <label for="intern_year_${sectionCount}" style="font-family:georgia">Укажите год:</label>
                     <input type="text" class="form-control" name="intern_year_${sectionCount}" id="intern_year_${sectionCount}" placeholder="2100">
                 </div>
+                <button type="button" class="btn" onclick="removeSection(this)">Удалить стажировку</button>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', sectionHTML);
+    }
+
+    function removeSection(button) {
+        const section = button.parentElement; // Получаем родительский элемент (раздел)
+        section.remove(); // Удаляем раздел из DOM
     }
 </script>
 {% endblock %}

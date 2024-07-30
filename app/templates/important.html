@@ -16,10 +16,11 @@
                     <label for="project_1" style="font-family:georgia">Укажите название проекта и важную информацию о нем:</label>
                     <input type="text" class="form-control" name="project_1" id="project_1" placeholder="Разработка чувашского корпуса">
                 </div>
+                 <button type="button" class="btn" onclick="removeSection(this)">Удалить проект</button>
             </div>
         </div>
         <div class="text-center">
-            <button type="button" class="btn" onclick="addSection()">Добавить раздел</button>
+            <button type="button" class="btn" onclick="addSection()">Добавить проект</button>
             <button type="submit" class="btn">Следующая страница</button>
         </div>
     </form>
@@ -36,11 +37,17 @@
         const sectionHTML = `
             <div class="section">
                 <div class="form-group">
+                    <label for="project_${sectionCount}" style="font-family:georgia">Укажите название проекта и важную информацию о нем:</label>
                     <input type="text" class="form-control" name="project_${sectionCount}" id="project_${sectionCount}" placeholder="Разработка чувашского корпуса">
                 </div>
+                 <button type="button" class="btn" onclick="removeSection(this)">Удалить проект</button>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', sectionHTML);
+    }
+    function removeSection(button) {
+        const section = button.parentElement; // Получаем родительский элемент (раздел)
+        section.remove(); // Удаляем раздел из DOM
     }
 </script>
 {% endblock %}

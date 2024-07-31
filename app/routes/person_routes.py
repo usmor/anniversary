@@ -91,7 +91,9 @@ def get_personal_info():
 
 @person_routes.route('/student_status', methods=['POST'])
 def student():
+    session['connection_present'] = False
     if request.form.get('student_status') == 'Да':
+        session['connection_present'] = True
         return redirect(url_for('person_routes.questionnaire', page_id='bachelor'))
     elif request.form.get('student_status') == 'Нет':
         return redirect(url_for('person_routes.questionnaire', page_id='employee'))
@@ -195,24 +197,20 @@ def phd_data():
 @person_routes.route('/employee_status', methods=['POST'])
 def employee():
     if request.form.get('employee_status') == 'Да':
+        session['connection_present'] = True
         return redirect(url_for('person_routes.questionnaire', page_id='teaching'))
-    elif request.form.get('employee_status') == 'Нет':
+    elif request.form.get('employee_status') == 'Нет' and not session['connection_present']:
         return redirect(url_for('person_routes.questionnaire', page_id='connection'))
+    else:
+        return redirect(url_for('person_routes.questionnaire', page_id='now'))
 
 
 @person_routes.route('/connection', methods=['POST'])
 def connection():
     respondent_id = session.get('respondent_id')
     connect = request.form.get('answer')
-    new_status = StatusList(status=connect)
-    db.session.add(new_status)
-    db.session.commit()
-
-    new_status_person = StatusPerson(
-        pers_id=respondent_id,
-        stat_id=db.session.query(
-            StatusList.id).filter_by(
-            status=connect).one()[0])
+    new_status_person = Connections(pers_id=respondent_id,
+                                    connection=connect)
     db.session.add(new_status_person)
     db.session.commit()
     return redirect(url_for('person_routes.questionnaire', page_id='now'))

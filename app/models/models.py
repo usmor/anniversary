@@ -10,6 +10,7 @@ class Person(db.Model):
     contact = db.Column(db.String, nullable=True)
     photo_filename = db.Column(db.String, nullable=True)
     status = db.relationship('StatusPerson', backref='Person', lazy=True)
+    connection = db.relationship('Connections', backref='Person', lazy=True)
     stage = db.relationship('Stages', backref='Person', lazy=True)
     current = db.relationship('CurrentAddresses', backref='Person', lazy=True)
     expeditions = db.relationship(
@@ -49,6 +50,13 @@ class StatusPerson(db.Model):
     year_fin = db.Column(db.Integer, nullable=True)
     program = db.Column(db.String, nullable=True)
     curator = db.Column(db.String, nullable=True)
+
+
+class Connections(db.Model):
+    __tablename__ = "Connections"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
+    connection = db.Column(db.String, nullable=True)
 
 
 class Stages(db.Model):

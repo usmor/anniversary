@@ -12,3 +12,8 @@ def main():
 @main_routes.route('/contacts')
 def contacts():
     return render_template('contacts.html')
+
+
+@main_routes.route('/emotion')
+def emotion():
+    return render_template('emotion.html')

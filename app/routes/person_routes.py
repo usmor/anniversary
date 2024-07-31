@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, render_template, request, current_app, session
+from flask import Blueprint, render_template, request, current_app, session, redirect, url_for
 from app import db
 from app.models.models import *
 
@@ -7,9 +7,47 @@ from app.models.models import *
 person_routes = Blueprint('person_routes', __name__)
 
 
+@person_routes.route('/person/page_<string:page_id>')  # Исправлено на string
+def questionnaire(page_id):
+    page_templates = {
+        'personal_info': 'personal_info.html',
+        'student': 'student.html',
+        'bachelor': 'bachelor.html',
+        'bachelor_data': 'bachelor_data.html',
+        'master': 'master.html',
+        'master_data': 'master_data.html',
+        'phd': 'phd.html',
+        'phd_data': 'phd_data.html',
+        'employee': 'employee.html',
+        'teaching': 'teaching.html',
+        'teaching_data': 'teaching_data.html',
+        'management': 'management.html',
+        'management_data': 'management_data.html',
+        'research': 'research.html',
+        'research_data': 'research_data.html',
+        'connection': 'connection.html',
+        'internships': 'internships.html',
+        'now': 'now.html',
+        'expedition': 'expedition.html',
+        'expedition_data': 'expedition_data.html',
+        'important': 'important.html',
+        'memories': 'memories.html',
+        'memories_data': 'memories_data.html',
+        'stories': 'stories.html',
+        'stories_data': 'stories_data.html',
+        'what_shl_is': 'what_shl_is.html',
+        'thanks': 'thanks.html'
+    }
+
+    template = page_templates.get(page_id)
+
+    if template:
+        return render_template(template)
+
+
 @person_routes.route('/person')
 def person():
-    return render_template('personal_info.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='personal_info'))
 
 
 @person_routes.route('/personal_info', methods=['POST'])
@@ -25,6 +63,7 @@ def get_personal_info():
     photo = request.files.get('photo')
     photo_name = None
     initials = f'{surname} {name} {second_name}'
+
     if photo and photo.filename != '':
         photo_name = initials + os.path.splitext(photo.filename)[1]
         photo_path = os.path.join(
@@ -42,43 +81,44 @@ def get_personal_info():
         second_name=second_name if second_name != '-' else None,
         contact=contact or None,
         photo_filename=photo_name)
+
     db.session.add(new_person)
     db.session.commit()
     session['respondent_id'] = new_person.id
 
-    return render_template('student.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='student'))
 
 
 @person_routes.route('/student_status', methods=['POST'])
 def student():
     if request.form.get('student_status') == 'Да':
-        return render_template('bachelor.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='bachelor'))
     elif request.form.get('student_status') == 'Нет':
-        return render_template('employee.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='employee'))
 
 
 @person_routes.route('/bachelor_status', methods=['POST'])
 def bachelor():
     if request.form.get('bachelor_status') == 'Да':
-        return render_template('bachelor_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='bachelor_data'))
     elif request.form.get('bachelor_status') == 'Нет':
-        return render_template('master.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='master'))
 
 
 @person_routes.route('/master_status', methods=['POST'])
 def master():
     if request.form.get('master_status') == 'Да':
-        return render_template('master_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='master_data'))
     elif request.form.get('master_status') == 'Нет':
-        return render_template('phd.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='phd'))
 
 
 @person_routes.route('/phd_status', methods=['POST'])
 def phd():
     if request.form.get('phd_status') == 'Да':
-        return render_template('phd_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='phd_data'))
     elif request.form.get('phd_status') == 'Нет':
-        return render_template('employee.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='employee'))
 
 
 @person_routes.route('/bachelor_data', methods=['POST'])
@@ -103,7 +143,7 @@ def bachelor_data():
         db.session.add(new_bach)
 
     db.session.commit()
-    return render_template('master.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='master'))
 
 
 @person_routes.route('/master_data', methods=['POST'])
@@ -126,7 +166,7 @@ def master_data():
         db.session.add(new_master)
 
     db.session.commit()
-    return render_template('phd.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='phd'))
 
 
 @person_routes.route('/phd_data', methods=['POST'])
@@ -149,15 +189,15 @@ def phd_data():
         db.session.add(new_phd)
 
     db.session.commit()
-    return render_template('employee.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='employee'))
 
 
 @person_routes.route('/employee_status', methods=['POST'])
 def employee():
     if request.form.get('employee_status') == 'Да':
-        return render_template('teaching.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='teaching'))
     elif request.form.get('employee_status') == 'Нет':
-        return render_template('connection.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='connection'))
 
 
 @person_routes.route('/connection', methods=['POST'])
@@ -175,31 +215,31 @@ def connection():
             status=connect).one()[0])
     db.session.add(new_status_person)
     db.session.commit()
-    return render_template('now.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='now'))
 
 
 @person_routes.route('/teaching_status', methods=['POST'])
 def teaching():
     if request.form.get('teaching_status') == 'Да':
-        return render_template('teaching_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='teaching_data'))
     elif request.form.get('teaching_status') == 'Нет':
-        return render_template('management.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='management'))
 
 
 @person_routes.route('/management_status', methods=['POST'])
 def management():
     if request.form.get('management_status') == 'Да':
-        return render_template('management_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='management_data'))
     elif request.form.get('management_status') == 'Нет':
-        return render_template('research.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='research'))
 
 
 @person_routes.route('/research_status', methods=['POST'])
 def research():
     if request.form.get('research_status') == 'Да':
-        return render_template('research_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='research_data'))
     elif request.form.get('research_status') == 'Нет':
-        return render_template('internships.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='internships'))
 
 
 @person_routes.route('/teaching_data', methods=['POST'])
@@ -216,7 +256,7 @@ def teaching_data():
                                    year_fin=year_fin)
         db.session.add(new_teacher)
     db.session.commit()
-    return render_template('management.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='management'))
 
 
 @person_routes.route('/management_data', methods=['POST'])
@@ -239,7 +279,7 @@ def management_data():
         db.session.add(new_manager)
     db.session.commit()
 
-    return render_template('research.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='research'))
 
 
 @person_routes.route('/research_data', methods=['POST'])
@@ -256,7 +296,7 @@ def research_data():
                                     year_fin=year_fin)
         db.session.add(new_laborant)
     db.session.commit()
-    return render_template('internships.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='internships'))
 
 
 @person_routes.route('/internships', methods=['POST'])
@@ -274,7 +314,7 @@ def internships_data():
         db.session.add(new_stage)
 
     db.session.commit()
-    return render_template('now.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='now'))
 
 
 @person_routes.route('/now', methods=['POST'])
@@ -287,15 +327,15 @@ def now():
                                    position=current_workplace)
     db.session.add(new_current)
     db.session.commit()
-    return render_template('expedition.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='expedition'))
 
 
 @person_routes.route('/expedition_status', methods=['POST'])
 def expedition():
     if request.form.get('expedition_status') == 'Да':
-        return render_template('expedition_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='expedition_data'))
     elif request.form.get('expedition_status') == 'Нет':
-        return render_template('important.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='important'))
 
 
 @person_routes.route('/expedition_data', methods=['POST'])
@@ -327,7 +367,7 @@ def expedition_data():
                 db.session.add(new_exp)
 
     db.session.commit()
-    return render_template('important.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='important'))
 
 
 @person_routes.route('/important_data', methods=['POST'])
@@ -341,15 +381,15 @@ def important():
                                    project_info=project_desc)
         db.session.add(new_project)
         db.session.commit()
-    return render_template('memories.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='memories'))
 
 
 @person_routes.route('/memories_status', methods=['POST'])
 def memories():
     if request.form.get('memories_status') == 'Да':
-        return render_template('memories_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='memories_data'))
     elif request.form.get('memories_status') == 'Нет':
-        return render_template('stories.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='stories'))
 
 
 @person_routes.route('/memories_data', methods=['POST'])
@@ -390,15 +430,15 @@ def memories_data():
         db.session.add(new_link)
         db.session.commit()
 
-    return render_template('stories.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='stories'))
 
 
 @person_routes.route('/stories_status', methods=['POST'])
 def stories():
     if request.form.get('stories_status') == 'Да':
-        return render_template('stories_data.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='stories_data'))
     elif request.form.get('stories_status') == 'Нет':
-        return render_template('what_shl_is.html')
+        return redirect(url_for('person_routes.questionnaire', page_id='what_shl_is'))
 
 
 @person_routes.route('/stories_data', methods=['POST'])
@@ -434,7 +474,7 @@ def stories_data():
         db.session.add(new_story)
         db.session.commit()
 
-    return render_template('what_shl_is.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='what_shl_is'))
 
 
 @person_routes.route('/what_shl_is', methods=['POST'])
@@ -445,4 +485,4 @@ def what_shl_is():
                                 content=answer)
     db.session.add(new_emotion)
     db.session.commit()
-    return render_template('thanks.html')
+    return redirect(url_for('person_routes.questionnaire', page_id='thanks'))

@@ -3,63 +3,12 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        font-family: georgia;
-        font-size: 18px;
-    }
-    .contact-bar {
-        background-color: #F8F32B;
-        color: #000000;
-        text-align: center;
-        padding: 10px 0;
-    }
-    .form-container {
-        background-color: #8D99AE;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px auto;
-        max-width: 1000px;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-    }
-    .form-group input,
-    .form-group select {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-    }
-    .btn {
-        background-color: #2b2d42;
-        color: #ffffff;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-    }
-    .btn:hover {
-        background-color: #3d5a5a;
-    }
-    .section {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #C3CAD5;
-        border: 1px solid #dddddd;
-    }
-    .section + .section {
-        margin-top: 20px;
-    }
-</style>
 
 <div class="contact-bar">
     <div class="form-container">
     <form action="/management_data" method="POST">
         <div class="form-group">
-            <label>В какой институции Вы занимаете или занимали административную должность?</label>
+            <label>В какой институции Вы занимаете/занимали административную должность?</label>
             <table style="width: 100%; border-collapse: collapse; font-size: 18px">
                 <tr>
                     <td style="width: 10%; border: none; text-align: center;">

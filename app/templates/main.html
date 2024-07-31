@@ -3,12 +3,78 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+<style>
+    .section-group {
+        background-color: #fbfbf8; /* Цвет фона для контейнера формы */
+        padding: 20px; /* Паддинг для контейнера */
+        border-radius: 10px; /* Скругление углов */
+        margin: 20px auto; /* Центрирование контейнера */
+        max-width: 1000px; /* Максимальная ширина контейнера */
+    }
 
-<br>
-<p style="font-family:georgia">introduction</p>
-<p style="font-family:georgia"> что-то про анкету</p>
-<p style="font-family:georgia">
-   И не забудьте посетить юбилей Школы Лингвистики 12 октября!
-</p>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 20px; /* Отступы внутри ячеек */
+        vertical-align: top; /* Вертикальное выравнивание содержимого ячеек */
+        width: 50%; /* Равная ширина для столбцов */
+        border-right: 1px solid #CDDFE3; /* Вертикальная граница между столбцами */
+        text-align: center; /* Центрируем содержимое ячейки */
+    }
+
+    td:last-child {
+        border-right: none; /* Убирает границу у последнего столбца */
+    }
+
+    .button {
+        background-color: #CDDFE3; /* Основной цвет кнопки */
+        color: #24282C; /* Цвет текста в кнопках */
+        padding: 10px 20px; /* Паддинг для кнопок */
+        border: none; /* Без рамки */
+        border-radius: 5px; /* Скругление углов */
+        cursor: pointer; /* Указатель на курсоре */
+        margin: 5px; /* Отступ между кнопками */
+        transition: background-color 0.3s; /* Плавный переход цвета */
+        margin: 10px auto; /* Отступ между кнопками и автоматические отступы по бокам для центрирования */
+        display: block; /* Делает кнопку блочным элементом */
+    }
+
+    .button:hover {
+        background-color: #CDDFE3; /* Цвет кнопки при наведении */
+    }
+</style>
+
+<div class="contact-bar">
+    <div class="form-container">
+        <div class="section-group">
+            <h1 style="font-size: 30px">Школа Лингвистики – это...</h1>
+            <p>какой-то текст</p>
+            <table>
+                <tr>
+                    <td>
+                        <div>
+                            <p class="icon-person" style="font-size: 40px;">&#128100;</p>
+                            <h2>Персоналия</h2>
+                        </div>
+                        <p>что-то про анкету</p>
+                        <a href="/person" class="btn">Перейти к анкете</a>
+                    </td>
+                    <td>
+                        <div>
+                            <p class="icon-person" style="font-size: 40px;">&#128524;</p>
+                            <h2>Эмоциональная анкета</h2>
+                        </div>
+                        <p>что-то про анкету</p>
+                        <a href="/emotion" class="btn">Перейти к анкете</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

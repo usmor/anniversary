@@ -3,60 +3,46 @@
 {% block title %}Анкета{% endblock %}
 
 {% block content %}
-    <style>
-        body {
-            font-family: georgia;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 18px;
-        }
+<style>
+    label {
+        margin: 10px 0;
+        display: block;
+        font-weight: bold;
+    }
 
-        h1 {
-            text-align: center;
-        }
+    /* Общий стиль для всех полей ввода */
+    input[type="url"],
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 1px solid #CDDFE3; /* Общий бордер */
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box; /* Учитываем бордер и паддинг в ширине */
+    }
 
-        form {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
+    input[type="radio"] {
+        margin-right: 10px;
+    }
 
-        label {
-            margin: 10px 0;
-            display: block;
-            font-weight: bold;
-        }
+    .conditional {
+        display: none;
+        margin-top: 18px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #fbfbf8;
+    }
 
-        input[type="url"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+    .conditional h3 {
+        margin-top: 0;
+    }
 
-        input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        .conditional {
-            display: none;
-            margin-top: 18px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-
-        .conditional h3 {
-            margin-top: 0;
-            color: #000000;
-        }
-    </style>
+    .text-center {
+        text-align: center;
+    }
+</style>
 <script>
     function toggleFields(selection) {
         const shareNowFields = document.getElementById('share-now-fields');
@@ -78,45 +64,44 @@
 <div class="contact-bar">
     <div class="form-container">
         <form action="/stories_data" method="POST">
+            <h1>Ваши воспоминания</h1>
             <label>
                 <input type="radio" name="response" value="Поделюсь сейчас" onclick="toggleFields(this.value)">
                 Поделюсь сейчас
             </label>
-            <br>
             <label>
                 <input type="radio" name="response" value="Свяжитесь со мной позже" onclick="toggleFields(this.value)">
                 Свяжитесь со мной позже
             </label>
 
             <div id="share-now-fields" class="conditional" style="display: none;">
+                <div class="section">
                 <h3 style="font-size: 20px">Добавьте всю необходимую информацию</h3>
                 <label for="story">Ваше воспоминание / история:</label>
                 <p><i>(можно оставить ссылку на документ)</i></p>
                 <textarea id="story" name="story" rows="4" placeholder="Введите текст"></textarea>
-            </div>
+                </div></div>
 
             <div id="contact-later-fields" class="conditional" style="display: none;">
+                <div class="section">
                 <h3 style="font-size: 20px">Как Вы предпочитаете, чтобы с Вами связались?</h3>
                 <label>
                     <input type="radio" name="contact-method" value="По тому адресу, который был указан мною ранее">
                     По тому адресу, который был указан мною ранее
                 </label>
-                <br>
                 <label>
                     <input type="radio" name="contact-method" value="Указать новый адрес" onclick="document.getElementById('new-address').style.display='block';">
                     Указать новый адрес
                 </label>
-                <br>
-                <div id="new-address" class="conditional" style="display: none;">
+                <div id="new-address" class="conditional" style="display: none; background-color: #ffffff">
                     <label for="new_address">Новый адрес:</label>
                     <input type="text" id="new_address" name="new_address" placeholder="Введите новый адрес">
-                </div>
+                </div></div>
             </div>
 
             <br>
             <div class="text-center">
-                <button type="submit" class="btn btn-secondary"
-                        style="background-color: #2B2D42; font-family:georgia; color:#ffffff">Следующая страница</button>
+                <button type="submit" class="btn btn-secondary">Следующая страница</button>
             </div>
         </form>
     </div>

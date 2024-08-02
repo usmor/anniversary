@@ -163,7 +163,7 @@ def bachelor_data():
         StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=1).delete()
         db.session.commit()
 
-    sections = [key.split('_')[2] for key in request.form.keys()
+    sections = [key.split('_')[3] for key in request.form.keys()
                 if key.startswith('bach_start_year_')]
 
     for section in sections:
@@ -219,7 +219,7 @@ def phd_data():
         StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=3).delete()
         db.session.commit()
 
-    sections = [key.split('_')[2] for key in request.form.keys()
+    sections = [key.split('_')[3] for key in request.form.keys()
                 if key.startswith('phd_start_year_')]
     for section in sections:
         # program = request.form.get(f'phd_program_{section}')

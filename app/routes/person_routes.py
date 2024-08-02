@@ -47,11 +47,22 @@ def questionnaire(page_id):
 
 @person_routes.route('/person')
 def person():
-    return redirect(url_for('person_routes.questionnaire', page_id='personal_info'))
+    return redirect(
+        url_for(
+            'person_routes.questionnaire',
+            page_id='personal_info'))
 
 
 @person_routes.route('/personal_info', methods=['POST'])
 def get_personal_info():
+    respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing person if going back
+        existing_person = Person.query.get(respondent_id)
+        if existing_person:
+            db.session.delete(existing_person)
+            db.session.commit()
+
     surname = request.form.get('surname')
     name = request.form.get('name')
     second_name = request.form.get('second_name', '')
@@ -94,23 +105,38 @@ def student():
     session['connection_present'] = False
     if request.form.get('student_status') == 'Да':
         session['connection_present'] = True
-        return redirect(url_for('person_routes.questionnaire', page_id='bachelor'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='bachelor'))
     elif request.form.get('student_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='employee'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='employee'))
 
 
 @person_routes.route('/bachelor_status', methods=['POST'])
 def bachelor():
     if request.form.get('bachelor_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='bachelor_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='bachelor_data'))
     elif request.form.get('bachelor_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='master'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='master'))
 
 
 @person_routes.route('/master_status', methods=['POST'])
 def master():
     if request.form.get('master_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='master_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='master_data'))
     elif request.form.get('master_status') == 'Нет':
         return redirect(url_for('person_routes.questionnaire', page_id='phd'))
 
@@ -118,20 +144,29 @@ def master():
 @person_routes.route('/phd_status', methods=['POST'])
 def phd():
     if request.form.get('phd_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='phd_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='phd_data'))
     elif request.form.get('phd_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='employee'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='employee'))
 
 
 @person_routes.route('/bachelor_data', methods=['POST'])
 def bachelor_data():
     respondent_id = session.get('respondent_id')
-    # sections = [key.split('_')[2] for key in request.form.keys()
-    #             if key.startswith('bach_program_')]
-    sections = [key.split('_')[2] for key in request.form.keys() if key.startswith('bach_start_year_')]
+    if respondent_id:
+        # Delete existing bachelor data
+        StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=1).delete()
+        db.session.commit()
+
+    sections = [key.split('_')[2] for key in request.form.keys()
+                if key.startswith('bach_start_year_')]
 
     for section in sections:
-        # program = request.form.get(f'bach_program_{section}')
         year_start = request.form.get(f'bach_start_year_{section}')
         year_fin = request.form.get(f'bach_end_year_{section}')
         curator = request.form.get(f'bach_curator_{section}')
@@ -151,6 +186,11 @@ def bachelor_data():
 @person_routes.route('/master_data', methods=['POST'])
 def master_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing master data
+        StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=2).delete()
+        db.session.commit()
+
     sections = [key.split('_')[2] for key in request.form.keys()
                 if key.startswith('master_program_')]
     for section in sections:
@@ -174,6 +214,11 @@ def master_data():
 @person_routes.route('/phd_data', methods=['POST'])
 def phd_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing phd data
+        StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=3).delete()
+        db.session.commit()
+
     sections = [key.split('_')[2] for key in request.form.keys()
                 if key.startswith('phd_start_year_')]
     for section in sections:
@@ -182,12 +227,13 @@ def phd_data():
         year_fin = request.form.get(f'phd_end_year_{section}')
         curator = request.form.get(f'phd_curator_{section}')
 
-        new_phd = StatusPerson(pers_id=respondent_id,
-                               program='Аспирантская школа по филологическим наукам',
-                               stat_id=3,
-                               year_start=year_start or None,
-                               year_fin=year_fin or None,
-                               curator=curator or None)
+        new_phd = StatusPerson(
+            pers_id=respondent_id,
+            program='Аспирантская школа по филологическим наукам',
+            stat_id=3,
+            year_start=year_start or None,
+            year_fin=year_fin or None,
+            curator=curator or None)
         db.session.add(new_phd)
 
     db.session.commit()
@@ -198,9 +244,15 @@ def phd_data():
 def employee():
     if request.form.get('employee_status') == 'Да':
         session['connection_present'] = True
-        return redirect(url_for('person_routes.questionnaire', page_id='teaching'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='teaching'))
     elif request.form.get('employee_status') == 'Нет' and not session['connection_present']:
-        return redirect(url_for('person_routes.questionnaire', page_id='connection'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='connection'))
     else:
         return redirect(url_for('person_routes.questionnaire', page_id='now'))
 
@@ -208,6 +260,11 @@ def employee():
 @person_routes.route('/connection', methods=['POST'])
 def connection():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing connection data
+        Connections.query.filter_by(pers_id=respondent_id).delete()
+        db.session.commit()
+
     connect = request.form.get('answer')
     new_status_person = Connections(pers_id=respondent_id,
                                     connection=connect)
@@ -219,30 +276,53 @@ def connection():
 @person_routes.route('/teaching_status', methods=['POST'])
 def teaching():
     if request.form.get('teaching_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='teaching_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='teaching_data'))
     elif request.form.get('teaching_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='management'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='management'))
 
 
 @person_routes.route('/management_status', methods=['POST'])
 def management():
     if request.form.get('management_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='management_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='management_data'))
     elif request.form.get('management_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='research'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='research'))
 
 
 @person_routes.route('/research_status', methods=['POST'])
 def research():
     if request.form.get('research_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='research_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='research_data'))
     elif request.form.get('research_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='internships'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='internships'))
 
 
 @person_routes.route('/teaching_data', methods=['POST'])
 def teaching_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing teaching data
+        StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=4).delete()
+        db.session.commit()
+
     programs_list = request.form.getlist('courses')
     year_start = request.form.get('teaching_start_year')
     year_fin = request.form.get('teaching_end_year')
@@ -254,12 +334,20 @@ def teaching_data():
                                    year_fin=year_fin)
         db.session.add(new_teacher)
     db.session.commit()
-    return redirect(url_for('person_routes.questionnaire', page_id='management'))
+    return redirect(
+        url_for(
+            'person_routes.questionnaire',
+            page_id='management'))
 
 
 @person_routes.route('/management_data', methods=['POST'])
 def management_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing management data
+        StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=5).delete()
+        db.session.commit()
+
     institutions_list = request.form.getlist('institution')
     other_institution = request.form.get('other_institution', '')
     if 'Другое' in institutions_list:
@@ -275,14 +363,19 @@ def management_data():
                                    year_start=year_start,
                                    year_fin=year_fin)
         db.session.add(new_manager)
-    db.session.commit()
 
+    db.session.commit()
     return redirect(url_for('person_routes.questionnaire', page_id='research'))
 
 
 @person_routes.route('/research_data', methods=['POST'])
 def research_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing research data
+        StatusPerson.query.filter_by(pers_id=respondent_id, stat_id=6).delete()
+        db.session.commit()
+
     research_groups = request.form.getlist('research_groups')
     year_start = request.form.get('research_start_year')
     year_fin = request.form.get('research_end_year')
@@ -294,12 +387,20 @@ def research_data():
                                     year_fin=year_fin)
         db.session.add(new_laborant)
     db.session.commit()
-    return redirect(url_for('person_routes.questionnaire', page_id='internships'))
+    return redirect(
+        url_for(
+            'person_routes.questionnaire',
+            page_id='internships'))
 
 
 @person_routes.route('/internships', methods=['POST'])
 def internships_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing internship data
+        Stages.query.filter_by(pers_id=respondent_id).delete()
+        db.session.commit()
+
     sections = [key.split('_')[2] for key in request.form.keys()
                 if key.startswith('intern_place_')]
     for section in sections:
@@ -318,6 +419,11 @@ def internships_data():
 @person_routes.route('/now', methods=['POST'])
 def now():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing current address data
+        CurrentAddresses.query.filter_by(pers_id=respondent_id).delete()
+        db.session.commit()
+
     current_city = request.form.get('current_city')
     current_workplace = request.form.get('current_workplace')
     new_current = CurrentAddresses(pers_id=respondent_id,
@@ -325,20 +431,34 @@ def now():
                                    position=current_workplace)
     db.session.add(new_current)
     db.session.commit()
-    return redirect(url_for('person_routes.questionnaire', page_id='expedition'))
+    return redirect(
+        url_for(
+            'person_routes.questionnaire',
+            page_id='expedition'))
 
 
 @person_routes.route('/expedition_status', methods=['POST'])
 def expedition():
     if request.form.get('expedition_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='expedition_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='expedition_data'))
     elif request.form.get('expedition_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='important'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='important'))
 
 
 @person_routes.route('/expedition_data', methods=['POST'])
 def expedition_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing expedition data
+        ExpeditionsParticipation.query.filter_by(
+            pers_id=respondent_id).delete()
+        db.session.commit()
 
     form_data = request.form
     sections = [key.split('_')[1]
@@ -365,12 +485,20 @@ def expedition_data():
                 db.session.add(new_exp)
 
     db.session.commit()
-    return redirect(url_for('person_routes.questionnaire', page_id='important'))
+    return redirect(
+        url_for(
+            'person_routes.questionnaire',
+            page_id='important'))
 
 
 @person_routes.route('/important_data', methods=['POST'])
 def important():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing important project data
+        UserProjects.query.filter_by(pers_id=respondent_id).delete()
+        db.session.commit()
+
     sections = [key.split('_')[1] for key in request.form.keys()
                 if key.startswith('project_')]
     for section in sections:
@@ -385,14 +513,25 @@ def important():
 @person_routes.route('/memories_status', methods=['POST'])
 def memories():
     if request.form.get('memories_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='memories_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='memories_data'))
     elif request.form.get('memories_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='stories'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='stories'))
 
 
 @person_routes.route('/memories_data', methods=['POST'])
 def memories_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing memories data
+        CrowdSourceLinks.query.filter_by(pers_id=respondent_id).delete()
+        db.session.commit()
+
     response = request.form.get('response')
     current_address = db.session.query(
         Person.contact).filter_by(
@@ -434,14 +573,25 @@ def memories_data():
 @person_routes.route('/stories_status', methods=['POST'])
 def stories():
     if request.form.get('stories_status') == 'Да':
-        return redirect(url_for('person_routes.questionnaire', page_id='stories_data'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='stories_data'))
     elif request.form.get('stories_status') == 'Нет':
-        return redirect(url_for('person_routes.questionnaire', page_id='what_shl_is'))
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='what_shl_is'))
 
 
 @person_routes.route('/stories_data', methods=['POST'])
 def stories_data():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing stories data
+        CrowdSourceStories.query.filter_by(pers_id=respondent_id).delete()
+        db.session.commit()
+
     response = request.form.get('response')
     current_address = db.session.query(
         Person.contact).filter_by(
@@ -472,12 +622,20 @@ def stories_data():
         db.session.add(new_story)
         db.session.commit()
 
-    return redirect(url_for('person_routes.questionnaire', page_id='what_shl_is'))
+    return redirect(
+        url_for(
+            'person_routes.questionnaire',
+            page_id='what_shl_is'))
 
 
 @person_routes.route('/what_shl_is', methods=['POST'])
 def what_shl_is():
     respondent_id = session.get('respondent_id')
+    if respondent_id:
+        # Delete existing emotional data
+        EmotionalSchl.query.filter_by(pers_id=respondent_id).delete()
+        db.session.commit()
+
     answer = request.form.get('answer')
     new_emotion = EmotionalSchl(pers_id=respondent_id,
                                 content=answer)

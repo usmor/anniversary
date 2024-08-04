@@ -26,6 +26,7 @@ def questionnaire(page_id):
         'research': 'research.html',
         'research_data': 'research_data.html',
         'connection': 'connection.html',
+        'internships_check': 'internships_check.html',
         'internships': 'internships.html',
         'now': 'now.html',
         'expedition': 'expedition.html',
@@ -91,7 +92,7 @@ def get_personal_info():
         name=name,
         second_name=second_name if second_name != '-' else None,
         contact=contact or None,
-        photo_filename=photo_name)
+        photo_filename=photo_name or None)
 
     db.session.add(new_person)
     db.session.commit()
@@ -155,6 +156,17 @@ def phd():
                 page_id='employee'))
 
 
+@person_routes.route('/internship_status', methods=['POST'])
+def internship():
+    if request.form.get('internship_status') == 'Да':
+        return redirect(
+            url_for(
+                'person_routes.questionnaire',
+                page_id='internships'))
+    elif request.form.get('internship_status') == 'Нет':
+        return redirect(url_for('person_routes.questionnaire', page_id='now'))
+
+
 @person_routes.route('/bachelor_data', methods=['POST'])
 def bachelor_data():
     respondent_id = session.get('respondent_id')
@@ -200,7 +212,7 @@ def master_data():
         curator = request.form.get(f'master_curator_{section}')
 
         new_master = StatusPerson(pers_id=respondent_id,
-                                  program=program,
+                                  program=program or None,
                                   stat_id=2,
                                   year_start=year_start or None,
                                   year_fin=year_fin or None,
@@ -267,7 +279,7 @@ def connection():
 
     connect = request.form.get('answer')
     new_status_person = Connections(pers_id=respondent_id,
-                                    connection=connect)
+                                    connection=connect or None)
     db.session.add(new_status_person)
     db.session.commit()
     return redirect(url_for('person_routes.questionnaire', page_id='now'))
@@ -312,7 +324,7 @@ def research():
         return redirect(
             url_for(
                 'person_routes.questionnaire',
-                page_id='internships'))
+                page_id='internships_check'))
 
 
 @person_routes.route('/teaching_data', methods=['POST'])
@@ -328,10 +340,10 @@ def teaching_data():
     year_fin = request.form.get('teaching_end_year')
     for program in programs_list:
         new_teacher = StatusPerson(pers_id=respondent_id,
-                                   program=program,
+                                   program=program or None,
                                    stat_id=4,
-                                   year_start=year_start,
-                                   year_fin=year_fin)
+                                   year_start=year_start or None,
+                                   year_fin=year_fin or None)
         db.session.add(new_teacher)
     db.session.commit()
     return redirect(
@@ -360,8 +372,8 @@ def management_data():
         new_manager = StatusPerson(pers_id=respondent_id,
                                    program=institution,
                                    stat_id=5,
-                                   year_start=year_start,
-                                   year_fin=year_fin)
+                                   year_start=year_start or None,
+                                   year_fin=year_fin or None)
         db.session.add(new_manager)
 
     db.session.commit()
@@ -383,14 +395,14 @@ def research_data():
         new_laborant = StatusPerson(pers_id=respondent_id,
                                     program=group,
                                     stat_id=6,
-                                    year_start=year_start,
-                                    year_fin=year_fin)
+                                    year_start=year_start or None,
+                                    year_fin=year_fin or None)
         db.session.add(new_laborant)
     db.session.commit()
     return redirect(
         url_for(
             'person_routes.questionnaire',
-            page_id='internships'))
+            page_id='internships_check'))
 
 
 @person_routes.route('/internships', methods=['POST'])
@@ -408,8 +420,8 @@ def internships_data():
         stage_year = request.form.get(f'intern_year_{section}')
 
         new_stage = Stages(pers_id=respondent_id,
-                           year=stage_year,
-                           stage=stage_name)
+                           year=stage_year or None,
+                           stage=stage_name or None)
         db.session.add(new_stage)
 
     db.session.commit()
@@ -427,8 +439,8 @@ def now():
     current_city = request.form.get('current_city')
     current_workplace = request.form.get('current_workplace')
     new_current = CurrentAddresses(pers_id=respondent_id,
-                                   address=current_city,
-                                   position=current_workplace)
+                                   address=current_city or None,
+                                   position=current_workplace or None)
     db.session.add(new_current)
     db.session.commit()
     return redirect(
@@ -504,7 +516,7 @@ def important():
     for section in sections:
         project_desc = request.form.get(f'project_{section}')
         new_project = UserProjects(pers_id=respondent_id,
-                                   project_info=project_desc)
+                                   project_info=project_desc or None)
         db.session.add(new_project)
         db.session.commit()
     return redirect(url_for('person_routes.questionnaire', page_id='memories'))
@@ -546,9 +558,9 @@ def memories_data():
         link = request.form.get('link')
         description = request.form.get('description')
         new_link = CrowdSourceLinks(pers_id=respondent_id,
-                                    contact=address,
-                                    link=link,
-                                    description=description)
+                                    contact=address or None,
+                                    link=link or None,
+                                    description=description or None)
         db.session.add(new_link)
         db.session.commit()
 
@@ -561,9 +573,9 @@ def memories_data():
             address = request.form.get('new_address')
 
         new_link = CrowdSourceLinks(pers_id=respondent_id,
-                                    contact=address,
-                                    link=link,
-                                    description=description)
+                                    contact=address or None,
+                                    link=link or None,
+                                    description=description or None)
         db.session.add(new_link)
         db.session.commit()
 
@@ -605,8 +617,8 @@ def stories_data():
     if response == 'Поделюсь сейчас':
         story = request.form.get('story')
         new_story = CrowdSourceStories(pers_id=respondent_id,
-                                       contact=address,
-                                       story=story)
+                                       contact=address or None,
+                                       story=story or None)
         db.session.add(new_story)
         db.session.commit()
     elif response == 'Свяжитесь со мной позже':
@@ -617,8 +629,8 @@ def stories_data():
             address = request.form.get('new_address')
 
         new_story = CrowdSourceStories(pers_id=respondent_id,
-                                       contact=address,
-                                       story=story)
+                                       contact=address or None,
+                                       story=story or None)
         db.session.add(new_story)
         db.session.commit()
 
@@ -638,7 +650,7 @@ def what_shl_is():
 
     answer = request.form.get('answer')
     new_emotion = EmotionalSchl(pers_id=respondent_id,
-                                content=answer)
+                                content=answer or None)
     db.session.add(new_emotion)
     db.session.commit()
     return redirect(url_for('person_routes.questionnaire', page_id='thanks'))

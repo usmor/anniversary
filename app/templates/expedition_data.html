@@ -31,6 +31,7 @@
                 <div class="expeditions-container" style="margin-top: 20px;"></div>
                 </div></div>
             <div class="text-center">
+                <button class="btn btn-secondary" onclick="window.history.back(); return false;">Предыдущая страница</button>
                 <button type="button" onclick="addSection()" class="btn">Добавить еще экспедиции</button>
                 <button type="submit" class="btn">Следующая страница</button>
             </div>
@@ -149,9 +150,9 @@
                                     </label>
                                 </td>
                                 <td style="border: none;">
-                                    Другое
+                                    <b>Другое</b>
                                     <br>
-                                    <textarea name="other_exp_${number}" class="other-input" placeholder="Внесити необходимую инфомацию об экспедиции" oninput="updateOtherExpeditions(this, ${number})" style="width: 90%; height: 75px; display: none;"></textarea>
+                                    <textarea name="other_exp_${number}" class="other-input" placeholder="Внесите необходимую инфомацию об экспедиции" oninput="updateOtherExpeditions(this, ${number})" style="width: 90%; height: 75px; display: none;"></textarea>
                                 </td>
                             </tr>
                         </table>

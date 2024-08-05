@@ -15,8 +15,10 @@ def create_app():
 
     from app.routes.main_routes import main_routes as main_routes_blueprint
     from app.routes.person_routes import person_routes as person_routes_blueprint
+    from app.routes.emotion_routes import emotion_routes as emotion_routes_blueprint
     app.register_blueprint(main_routes_blueprint)
     app.register_blueprint(person_routes_blueprint)
+    app.register_blueprint(emotion_routes_blueprint)
 
     from app.models.models import StatusList
 

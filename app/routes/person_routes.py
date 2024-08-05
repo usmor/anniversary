@@ -7,7 +7,7 @@ from app.models.models import *
 person_routes = Blueprint('person_routes', __name__)
 
 
-@person_routes.route('/person/page_<string:page_id>')  # Исправлено на string
+@person_routes.route('/person/page_<string:page_id>')
 def questionnaire(page_id):
     page_templates = {
         'personal_info': 'personal_info.html',

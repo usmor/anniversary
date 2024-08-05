@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Эмоциональная анкета{% endblock %}
+
+{% block content %}
+<style>
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 1px solid #CDDFE3; /* Общий бордер */
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box; /* Учитываем бордер и паддинг в ширине */
+    }
+     table {
+        width: 95%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 8px; /* Отступы внутри ячеек */
+        vertical-align: top; /* Вертикальное выравнивание содержимого ячеек */
+        text-align: center; /* Центрируем содержимое ячейки */
+    }
+</style>
+
+<div class="contact-bar">
+<div class="form-container">
+    <form action="/emotion_data" method="POST">
+    <h3 style="font-family:georgia">Эмоциональные вопросы</h3>
+        <div class="form-group">
+        <label for="memories-education">Яркие воспоминания из учебного процесса в ШЛ:</label>
+            <textarea id="memories-education" name="memories-education"></textarea>
+        </div>
+        <div class="form-group">
+        <label for="memories-life">Яркие воспоминания из жизни вне учебного процесса:</label>
+        <textarea id="memories-life" name="memories-life" ></textarea>
+        </div>
+        <div class="form-group">
+        <label for="memories-people">Яркие воспоминания о людях, связанные с ШЛ:</label>
+        <textarea id="memories-people" name="memories-people" ></textarea>
+        </div>
+        <div class="form-group">
+        <label for="significant-spaces">Знаковые пространства для вас в ШЛ:</label>
+        <textarea id="significant-spaces" name="significant-spaces" ></textarea>
+        </div>
+        <div class="form-group">
+        <label for="unusual-experience">Самый необычный опыт, связанный с ШЛ:</label>
+        <textarea id="unusual-experience" name="unusual-experience"></textarea>
+        </div>
+        <div class="form-group">
+        <label>Ассоциации - с каким существительным, глаголом, местоимением ассоциируется ШЛ:</label>
+        <div class="associations">
+            <table>
+                <tr>
+                <td>
+                    <input type="text" id="noun" name="noun" placeholder="существительное" >
+                </td>
+                <td>
+                   <input type="text" id="verb" name="verb" placeholder="глагол" >
+                </td>
+                <td>
+                   <input type="text" id="pronoun" name="pronoun" placeholder="местоимение">
+                </td>
+                </tr>
+            </table>
+        </div>
+        </div>
+        <div class="form-group">
+        <label for="school-definition">ШЛ —  это...</label>
+        <textarea id="school-definition" name="school-definition"></textarea>
+        </div>
+        <div class="form-group">
+        <label for="greetings">А здесь можно передать приветы кому-нибудь или чему-нибудь, связывающему вас со ШЛ:</label>
+        <textarea id="greetings" name="greetings"></textarea>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-secondary" onclick="window.history.back(); return false;">Предыдущая страница</button>
+        <button type="submit" class="btn btn-secondary">Закончить анкету</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+{% endblock %}

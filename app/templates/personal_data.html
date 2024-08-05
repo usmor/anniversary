@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Эмоциональная анкета{% endblock %}
+
+{% block content %}
+
+<div class="contact-bar">
+    <div class="form-container">
+        <form action="/emotion_personal_data" method="POST"  enctype="multipart/form-data">
+            <br>
+            <h3 style="font-family:georgia"><b>О себе</b></h3>
+          <p>При желании представьтесь</p>
+            <div class="form-group">
+                <label for="surname" style="font-family:georgia">Фамилия</label>
+                <input type="text" class="form-control" name="surname" id="surname" placeholder="Якобсон">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="name" style="font-family:georgia">Имя</label>
+                <input  type="text" class="form-control" name="name" id="name" placeholder="Роман">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="second_name" style="font-family:georgia">Отчество</label>
+                <p><i>при отсутствии поставьте прочерк</i></p>
+                <input type="text" class="form-control" name="second_name" id="second_name" placeholder="Осипович">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary">Следующая страница</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

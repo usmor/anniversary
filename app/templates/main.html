@@ -5,23 +5,22 @@
 {% block content %}
 <style>
     .section-group {
-        background-color: #fbfbf8; /* Цвет фона для контейнера формы */
-        padding: 20px; /* Паддинг для контейнера */
+        background-color: #f4f4f4; /* Цвет фона для контейнера формы */
+        padding: 15px; /* Паддинг для контейнера */
         border-radius: 10px; /* Скругление углов */
         margin: 20px auto; /* Центрирование контейнера */
-        max-width: 1000px; /* Максимальная ширина контейнера */
+        max-width: 1500px; /* Максимальная ширина контейнера */
     }
 
     table {
-        width: 100%;
+        width: 95%;
         border-collapse: collapse;
     }
 
     td {
-        padding: 20px; /* Отступы внутри ячеек */
+        padding: 8px; /* Отступы внутри ячеек */
         vertical-align: top; /* Вертикальное выравнивание содержимого ячеек */
-        width: 50%; /* Равная ширина для столбцов */
-        border-right: 1px solid #CDDFE3; /* Вертикальная граница между столбцами */
+        border-right: 2px solid #CDDFE3; /* Вертикальная граница между столбцами */
         text-align: center; /* Центрируем содержимое ячейки */
     }
 
@@ -29,52 +28,55 @@
         border-right: none; /* Убирает границу у последнего столбца */
     }
 
-    .button {
-        background-color: #CDDFE3; /* Основной цвет кнопки */
-        color: #24282C; /* Цвет текста в кнопках */
-        padding: 10px 20px; /* Паддинг для кнопок */
-        border: none; /* Без рамки */
-        border-radius: 5px; /* Скругление углов */
-        cursor: pointer; /* Указатель на курсоре */
-        margin: 5px; /* Отступ между кнопками */
-        transition: background-color 0.3s; /* Плавный переход цвета */
-        margin: 10px auto; /* Отступ между кнопками и автоматические отступы по бокам для центрирования */
-        display: block; /* Делает кнопку блочным элементом */
+    img {
+        max-width: 100%; /* Устанавливаем максимальную ширину для изображения */
+        height: auto; /* Высота подстраивается автоматически */
+        border-radius: 10px; /* Скругление углов изображения (опционально) */
     }
 
-    .button:hover {
-        background-color: #CDDFE3; /* Цвет кнопки при наведении */
+    .icon-person {
+        font-size: 40px; /* Размер значка обычно */
+        display: block; /* Отображение в блоке */
+        margin: 10px 0; /* Отступы сверху и снизу */
+    }
+
+    h2 {
+        font-size: 25px; /* Размер заголовка */
+        margin: 10px 0; /* Отступы сверху и снизу */
+    }
+
+    p {
+        font-size: 18px; /* Размер текста */
+        margin: 5px 0; /* Отступы сверху и снизу */
+    }
+
+    hr {
+        border: 1px solid #CDDFE3; /* Цвет разделителя */
+        margin: 20px 0; /* Отступы сверху и снизу */
     }
 </style>
 
-<div class="contact-bar">
-    <div class="form-container">
-        <div class="section-group">
-            <h1 style="font-size: 30px">Школа Лингвистики – это...</h1>
-            <p>какой-то текст</p>
-            <table>
-                <tr>
-                    <td>
-                        <div>
-                            <p class="icon-person" style="font-size: 40px;">&#128100;</p>
-                            <h2>Персоналия</h2>
-                        </div>
-                        <p>что-то про анкету</p>
-                        <a href="/person" class="btn">Перейти к анкете</a>
-                    </td>
-                    <td>
-                        <div>
-                            <p class="icon-person" style="font-size: 40px;">&#128524;</p>
-                            <h2>Эмоциональная анкета</h2>
-                        </div>
-                        <p>что-то про анкету</p>
-                        <a href="/emotion" class="btn">Перейти к анкете</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-
+<table>
+    <tr>
+        <td style="width: 60%">
+            <img src="{{url_for('static', filename='letter.png')}}" alt="ШЛ" />
+        </td>
+        <td style="width: 40%">
+            <br><br><br><br><br>
+            <p class="icon-person">&#128100;</p>
+            <h2>Люди ШЛ</h2>
+            <p>— это что-то вроде переписи населения.</p>
+            <p>В этой анкете вы сможете рассказать о том, какой путь проделали в ШЛ. Там же есть форма для загрузки фотографий, на случай если у вас сохранилось что-то интересное, чем вы готовы поделиться.</p>
+            <a href="/person" class="btn">Перейти к анкете</a>
+            <br><br><br>
+            <hr>
+            <br>
+            <p class="icon-person">&#128524;</p>
+            <h2>Эмоциональная анкета</h2>
+            <p>В этой анкете вас ждут вопросы про яркие воспоминания и ассоциации, связанные со ШЛ.</p>
+            <a href="/emotion" class="btn">Перейти к анкете</a>
+        </td>
+    </tr>
+</table>
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for, request
 
 
 main_routes = Blueprint('main_routes', __name__)
@@ -12,8 +12,3 @@ def main():
 @main_routes.route('/contacts')
 def contacts():
     return render_template('contacts.html')
-
-
-@main_routes.route('/emotion')
-def emotion():
-    return render_template('emotion.html')

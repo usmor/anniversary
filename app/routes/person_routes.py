@@ -183,12 +183,13 @@ def bachelor_data():
         year_fin = request.form.get(f'bach_end_year_{section}')
         curator = request.form.get(f'bach_curator_{section}')
 
-        new_bach = StatusPerson(pers_id=respondent_id,
-                                program='ФиКЛ',
-                                stat_id=1,
-                                year_start=year_start or None,
-                                year_fin=year_fin or None,
-                                curator=curator or None)
+        new_bach = StatusPerson(
+            pers_id=respondent_id,
+            program='ФиКЛ',
+            stat_id=1,
+            year_start=year_start or None,
+            year_fin=year_fin if year_fin and year_fin != '-' else None,
+            curator=curator or None)
         db.session.add(new_bach)
 
     db.session.commit()
@@ -211,12 +212,13 @@ def master_data():
         year_fin = request.form.get(f'master_end_year_{section}')
         curator = request.form.get(f'master_curator_{section}')
 
-        new_master = StatusPerson(pers_id=respondent_id,
-                                  program=program or None,
-                                  stat_id=2,
-                                  year_start=year_start or None,
-                                  year_fin=year_fin or None,
-                                  curator=curator or None)
+        new_master = StatusPerson(
+            pers_id=respondent_id,
+            program=program or None,
+            stat_id=2,
+            year_start=year_start or None,
+            year_fin=year_fin if year_fin and year_fin != '-' else None,
+            curator=curator or None)
         db.session.add(new_master)
 
     db.session.commit()
@@ -244,7 +246,7 @@ def phd_data():
             program='Аспирантская школа по филологическим наукам',
             stat_id=3,
             year_start=year_start or None,
-            year_fin=year_fin or None,
+            year_fin=year_fin if year_fin and year_fin != '-' else None,
             curator=curator or None)
         db.session.add(new_phd)
 
@@ -339,11 +341,12 @@ def teaching_data():
     year_start = request.form.get('teaching_start_year')
     year_fin = request.form.get('teaching_end_year')
     for program in programs_list:
-        new_teacher = StatusPerson(pers_id=respondent_id,
-                                   program=program or None,
-                                   stat_id=4,
-                                   year_start=year_start or None,
-                                   year_fin=year_fin or None)
+        new_teacher = StatusPerson(
+            pers_id=respondent_id,
+            program=program or None,
+            stat_id=4,
+            year_start=year_start or None,
+            year_fin=year_fin if year_fin and year_fin != '-' else None)
         db.session.add(new_teacher)
     db.session.commit()
     return redirect(
@@ -367,13 +370,12 @@ def management_data():
         institutions_list.append(other_institution)
 
     year_start = request.form.get('management_start_year')
-    year_fin = request.form.get('management_end_year')
     for institution in institutions_list:
         new_manager = StatusPerson(pers_id=respondent_id,
                                    program=institution,
                                    stat_id=5,
                                    year_start=year_start or None,
-                                   year_fin=year_fin or None)
+                                   year_fin=None)
         db.session.add(new_manager)
 
     db.session.commit()
@@ -390,13 +392,12 @@ def research_data():
 
     research_groups = request.form.getlist('research_groups')
     year_start = request.form.get('research_start_year')
-    year_fin = request.form.get('research_end_year')
     for group in research_groups:
         new_laborant = StatusPerson(pers_id=respondent_id,
                                     program=group,
                                     stat_id=6,
                                     year_start=year_start or None,
-                                    year_fin=year_fin or None)
+                                    year_fin=None)
         db.session.add(new_laborant)
     db.session.commit()
     return redirect(

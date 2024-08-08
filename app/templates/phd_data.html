@@ -6,32 +6,40 @@
 
 <div class="contact-bar">
     <div class="form-container">
-    <form action="/phd_data" method="POST">
-        <h1 style="font-family:georgia">Аспирантура</h1>
-        <div id="sections-container">
-            <div class="section">
-                <div class="form-group">
-                    <label for="phd_start_year_1" style="font-family:georgia">Год начала обучения в <b>аспирантской школе по филологическим наукам</b>:</label>
-                    <input type="text" class="form-control" name="phd_start_year_1" id="phd_start_year_1" placeholder="1900">
+        <form action="/phd_data" method="POST">
+            <h1 style="font-family:georgia">Аспирантура</h1>
+            <div id="sections-container">
+                <div class="section">
+                    <div class="form-group">
+                        <label for="phd_start_year_1" style="font-family:georgia">Год начала обучения в <b>аспирантской
+                                школе по филологическим наукам</b>:</label>
+                        <input type="text" class="form-control" name="phd_start_year_1" id="phd_start_year_1"
+                            placeholder="1900">
+                    </div>
+                    <div class="form-group">
+                        <label for="phd_end_year_1" style="font-family:georgia">Год окончания обучения в <b>аспирантской
+                                школе по филологическим наукам</b>:</label>
+                        <p><i>если обучаетесь сейчас, поставьте прочерк (-)</i></p>
+                        <input type="text" class="form-control" name="phd_end_year_1" id="phd_end_year_1"
+                            placeholder="1904">
+                    </div>
+                    <div class="form-group">
+                        <label for="phd_curator_1" style="font-family:georgia">ФИО научного руководителя кандидатской
+                            диссертации:</label>
+                        <input type="text" class="form-control" name="phd_curator_1" id="phd_curator_1"
+                            placeholder="Петров Петр Петрович">
+                    </div>
+                    <button type="button" class="btn" onclick="removeSection(this)">Удалить аспирантуру</button>
                 </div>
-                <div class="form-group">
-                    <label for="phd_end_year_1" style="font-family:georgia">Год окончания обучения в <b>аспирантской школе по филологическим наукам</b>:</label>
-                    <input type="text" class="form-control" name="phd_end_year_1" id="phd_end_year_1" placeholder="1904">
-                </div>
-                <div class="form-group">
-                    <label for="phd_curator_1" style="font-family:georgia">ФИО научного руководителя кандидатской диссертации:</label>
-                    <input type="text" class="form-control" name="phd_curator_1" id="phd_curator_1" placeholder="Петров Петр Петрович">
-                </div>
-                <button type="button" class="btn" onclick="removeSection(this)">Удалить аспирантуру</button>
             </div>
-        </div>
-        <div class="text-center">
-            <button class="btn btn-secondary" onclick="window.history.back(); return false;">Предыдущая страница</button>
-            <button type="button" class="btn" onclick="addSection()">Добавить аспирантуру</button>
-            <button type="submit" class="btn">Следующая страница</button>
-        </div>
-    </form>
-    <br>
+            <div class="text-center">
+                <button class="btn btn-secondary" onclick="window.history.back(); return false;">Предыдущая
+                    страница</button>
+                <button type="button" class="btn" onclick="addSection()">Добавить аспирантуру</button>
+                <button type="submit" class="btn">Следующая страница</button>
+            </div>
+        </form>
+        <br>
     </div>
 </div>
 
@@ -49,6 +57,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phd_end_year_${sectionCount}" style="font-family:georgia">Год окончания обучения в <b>аспирантской школе по филологическим наукам</b>:</label>
+                    <p><i>если обучаетесь сейчас, поставьте прочерк (-)</i></p>
                     <input type="text" class="form-control" name="phd_end_year_${sectionCount}" id="phd_end_year_${sectionCount}" placeholder="1904">
                 </div>
                 <div class="form-group">

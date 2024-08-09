@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Эмоциональная анкета{% endblock %}
+
+{% block content %}
+<style>
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 1px solid #CDDFE3; /* Общий бордер */
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box; /* Учитываем бордер и паддинг в ширине */
+    }
+     table {
+        width: 95%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 8px; /* Отступы внутри ячеек */
+        vertical-align: top; /* Вертикальное выравнивание содержимого ячеек */
+        text-align: center; /* Центрируем содержимое ячейки */
+    }
+</style>
+
+<div class="contact-bar">
+<div class="form-container">
+    <form action="/emotion_data_1" method="POST">
+    <h1 style="font-family:georgia; font-size: 24px;" align="justfiy">Есть ли у вас яркие воспоминания, связанные с ШЛ, которыми вы готовы поделиться?</h1>
+        <h1 style="font-family:georgia; font-size: 18px;" align="justfiy">Здесь можно оставить ваши рассказы. Очень ценно всё: и одно-два слова, и роман с продолжением. И, конечно, эту анкету можно заполнять сколько угодно раз!</h1>
+        <br>
+        <div class="form-group">
+        <label for="memories-education">Об учёбе</label>
+            <p><i>(курс, преподаватели, экзамены, административные события...)</i></p>
+            <textarea id="memories-education" name="memories-education"></textarea>
+        </div>
+        <div class="form-group">
+        <label for="memories-life">О жизни вне учёбы</label>
+            <p><i>(экспедиции, походы, праздники, школы, хакатоны...)</i></p>
+        <textarea id="memories-life" name="memories-life" ></textarea>
+        </div>
+        <div class="form-group">
+        <label for="memories-people">О людях, связанных с ШЛ</label>
+            <p><i>(преподаватели, студенты, администрация, гости...)</i></p>
+        <textarea id="memories-people" name="memories-people" ></textarea>
+        </div>
+        <div class="form-group">
+        <label for="significant-spaces">О знаковых пространствах</label>
+            <p><i>(кабинеты, аудиториии, бары, парки, деревни...)</i></p>
+        <textarea id="significant-spaces" name="significant-spaces" ></textarea>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-secondary" onclick="window.history.back(); return false;">Предыдущая страница</button>
+        <button type="submit" class="btn btn-secondary">Следующая страница</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+{% endblock %}

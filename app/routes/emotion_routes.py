@@ -29,20 +29,21 @@ def emotion():
 @emotion_routes.route('/emotion_personal_data', methods=['POST'])
 def emotion_personal_data():
     respondent_id = session.get('respondent_id')
+    if Person.query.get(respondent_id):
+        session['second_status'] = True
+    print(session['second_status'])
     surname = request.form.get('surname')
     name = request.form.get('name')
     second_name = request.form.get('second_name')
-    if respondent_id:
-        # Delete existing person if going back
-        existing_entry = Emotions_main.query.get(respondent_id)
-        if existing_entry:
-            if surname != '':
-                existing_entry.surname = surname
-            if name != '':
-                existing_entry.name = name
-            if second_name != '':
-                existing_entry.sec_name = second_name
-            db.session.commit()
+    existing_entry = Emotions_main.query.get(respondent_id)
+    if respondent_id and existing_entry:
+        if surname != '':
+            existing_entry.surname = surname
+        if name != '':
+            existing_entry.name = name
+        if second_name != '':
+            existing_entry.sec_name = second_name
+        db.session.commit()
 
     else:
         person_entry = Emotions_main(surname=surname,
@@ -62,8 +63,8 @@ def emotion_data_1():
     memories_life = request.form.get('memories-life')
     memories_people = request.form.get('memories-people')
     significant_spaces = request.form.get('significant-spaces')
-    if respondent_id:
-        add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    if respondent_id and add_user:
         if memories_education != '':
             add_user.studies = memories_education
         if memories_life != '':
@@ -88,8 +89,8 @@ def emotion_data_1():
 def emotion_data_2():
     respondent_id = session.get('respondent_id')
     unusual_experience = request.form.get('unusual-experience')
-    if respondent_id:
-        add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    if respondent_id and add_user:
         if unusual_experience != '':
             add_user.exp = unusual_experience
         db.session.commit()
@@ -108,8 +109,8 @@ def emotion_data_3():
     verb = request.form.get('verb')
     pronoun = request.form.get('pronoun')
     school_definition = request.form.get('school-definition')
-    if respondent_id:
-        add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    if respondent_id and add_user:
         if noun != '':
             add_user.words_noun = noun
         if verb != '':
@@ -134,8 +135,8 @@ def emotion_data_3():
 def emotion_data_4():
     respondent_id = session.get('respondent_id')
     greetings = request.form.get('greetings')
-    if respondent_id:
-        add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    add_user = Emotions_main.query.filter_by(id=respondent_id).first()
+    if respondent_id and add_user:
         if greetings != '':
             add_user.hello = greetings
         db.session.commit()

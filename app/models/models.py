@@ -114,6 +114,25 @@ class EmotionalSchl(db.Model):
     content = db.Column(db.String, nullable=True)
 
 
+class Emotions_main(db.Model):
+    __tablename__ = "Emotions_main"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    surname = db.Column(db.String, nullable=True)
+    name = db.Column(db.String, nullable=True)
+    sec_name = db.Column(db.String, nullable=True)
+    studies = db.Column(db.String, nullable=True)
+    not_studies = db.Column(db.String, nullable=True)
+    people = db.Column(db.String, nullable=True)
+    spaces = db.Column(db.String, nullable=True)
+    exp = db.Column(db.String, nullable=True)
+    words_noun = db.Column(db.String, nullable=True)
+    words_verb = db.Column(db.String, nullable=True)
+    words_pron = db.Column(db.String, nullable=True)
+    this = db.Column(db.String, nullable=True)
+    hello = db.Column(db.String, nullable=True)
+
+
+
 # class InstitutionType(db.Model):  # презабить
 #     __tablename__ = "InstitutionType"
 #     id = db.Column(db.Integer, primary_key=True)

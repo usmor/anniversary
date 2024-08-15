@@ -7,6 +7,7 @@ class Config:
         'ANNIVERSARY_DATABASE_URL') or 'sqlite:///anniversary.db'
     UPLOAD_FOLDER = 'instance/uploads'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    LOG_FILE = 'anniversary.log'
 
 
 HOST = os.environ.get('ANNIVERSARY_HOST') or '0.0.0.0'

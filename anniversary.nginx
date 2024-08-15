@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    server_name lingschoolhistory.ru;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/museum/anniversary/app.sock;
+    }
+}

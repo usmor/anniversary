@@ -1,0 +1,12 @@
+[Unit]
+Description=Anniversary Website
+After=network.target
+[Service]
+User=museum
+Group=www-data
+WorkingDirectory=/home/museum/anniversary
+Environment="PATH=/home/museum/.venvs/anniversary/bin"
+ExecStart=/home/museum/.venvs/anniversary/bin/gunicorn --workers 3 --bind unix:/home/museum/anniversary/app.sock -m 007 run:app
+Restart=always
+[Install]
+WantedBy=multi-user.target

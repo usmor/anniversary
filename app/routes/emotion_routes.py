@@ -28,9 +28,7 @@ def emotion():
 
 @emotion_routes.route('/emotion_personal_data', methods=['POST'])
 def emotion_personal_data():
-    respondent_id = session.get('respondent_id')
-    if Person.query.get(respondent_id):
-        session['second_status'] = True
+    respondent_id = session.get('emotion_respondent_id')
     surname = request.form.get('surname')
     name = request.form.get('name')
     second_name = request.form.get('second_name')
@@ -50,14 +48,14 @@ def emotion_personal_data():
                                      sec_name=second_name)
         db.session.add(person_entry)
         db.session.commit()
-        session['respondent_id'] = person_entry.id
+        session['emotion_respondent_id'] = person_entry.id
     return redirect(url_for('emotion_routes.questionnaire',
                             page_id='emotion_data_1'))
 
 
 @emotion_routes.route('/emotion_data_1', methods=['POST'])
 def emotion_data_1():
-    respondent_id = session.get('respondent_id')
+    respondent_id = session.get('emotion_respondent_id')
     memories_education = request.form.get('memories-education')
     memories_life = request.form.get('memories-life')
     memories_people = request.form.get('memories-people')
@@ -80,7 +78,7 @@ def emotion_data_1():
                                    spaces=significant_spaces)
         db.session.add(info_entry)
         db.session.commit()
-        session['respondent_id'] = info_entry.id
+        session['emotion_respondent_id'] = info_entry.id
     return redirect(
         url_for(
             'emotion_routes.questionnaire',
@@ -89,7 +87,7 @@ def emotion_data_1():
 
 @emotion_routes.route('/emotion_data_2', methods=['POST'])
 def emotion_data_2():
-    respondent_id = session.get('respondent_id')
+    respondent_id = session.get('emotion_respondent_id')
     unusual_experience = request.form.get('unusual-experience')
     add_user = Emotions_main.query.filter_by(id=respondent_id).first()
     if respondent_id and add_user:
@@ -100,7 +98,7 @@ def emotion_data_2():
         info_entry = Emotions_main(exp=unusual_experience)
         db.session.add(info_entry)
         db.session.commit()
-        session['respondent_id'] = info_entry.id
+        session['emotion_respondent_id'] = info_entry.id
     return redirect(
         url_for(
             'emotion_routes.questionnaire',
@@ -109,7 +107,7 @@ def emotion_data_2():
 
 @emotion_routes.route('/emotion_data_3', methods=['POST'])
 def emotion_data_3():
-    respondent_id = session.get('respondent_id')
+    respondent_id = session.get('emotion_respondent_id')
     noun = request.form.get('noun')
     verb = request.form.get('verb')
     pronoun = request.form.get('pronoun')
@@ -132,7 +130,7 @@ def emotion_data_3():
                                    this=school_definition)
         db.session.add(info_entry)
         db.session.commit()
-        session['respondent_id'] = info_entry.id
+        session['emotion_respondent_id'] = info_entry.id
     return redirect(
         url_for(
             'emotion_routes.questionnaire',
@@ -141,7 +139,7 @@ def emotion_data_3():
 
 @emotion_routes.route('/emotion_data_4', methods=['POST'])
 def emotion_data_4():
-    respondent_id = session.get('respondent_id')
+    respondent_id = session.get('emotion_respondent_id')
     greetings = request.form.get('greetings')
     add_user = Emotions_main.query.filter_by(id=respondent_id).first()
     if respondent_id and add_user:
@@ -152,5 +150,5 @@ def emotion_data_4():
         info_entry = Emotions_main(hello=greetings)
         db.session.add(info_entry)
         db.session.commit()
-        session['respondent_id'] = info_entry.id
+        session['emotion_respondent_id'] = info_entry.id
     return redirect(url_for('emotion_routes.questionnaire', page_id='thanks'))

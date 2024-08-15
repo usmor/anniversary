@@ -57,12 +57,10 @@ def person():
 @person_routes.route('/personal_info', methods=['POST'])
 def get_personal_info():
     respondent_id = session.get('respondent_id')
+    existing_person = None
+
     if respondent_id:
-        # Delete existing person if going back
         existing_person = Person.query.get(respondent_id)
-        if existing_person:
-            db.session.delete(existing_person)
-            db.session.commit()
 
     surname = request.form.get('surname')
     name = request.form.get('name')
@@ -87,16 +85,25 @@ def get_personal_info():
             print(
                 f"Ошибка при сохранении фотографии {photo.filename} у пользователя по имени {initials}: {e}")
 
-    new_person = Person(
-        surname=surname,
-        name=name,
-        second_name=second_name if second_name != '-' else None,
-        contact=contact or None,
-        photo_filename=photo_name or None)
+    if existing_person:
+        # Update the existing person's information
+        existing_person.surname = surname
+        existing_person.name = name
+        existing_person.second_name = second_name if second_name != '-' else None
+        existing_person.contact = contact or None
+        existing_person.photo_filename = photo_name or existing_person.photo_filename
+        db.session.commit()
+    else:
+        new_person = Person(
+            surname=surname,
+            name=name,
+            second_name=second_name if second_name != '-' else None,
+            contact=contact or None,
+            photo_filename=photo_name or None)
 
-    db.session.add(new_person)
-    db.session.commit()
-    session['respondent_id'] = new_person.id
+        db.session.add(new_person)
+        db.session.commit()
+        session['respondent_id'] = new_person.id
 
     return redirect(url_for('person_routes.questionnaire', page_id='student'))
 

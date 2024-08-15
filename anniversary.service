@@ -5,8 +5,8 @@ After=network.target
 User=museum
 Group=www-data
 WorkingDirectory=/home/museum/anniversary
-EnvironmentFile=/home/museum/anniversary/.env
 Environment="PATH=/home/museum/.venvs/anniversary/bin"
+EnvironmentFile=/home/museum/anniversary/.env
 ExecStart=/home/museum/.venvs/anniversary/bin/gunicorn --workers 3 --bind unix:/home/museum/anniversary/app.sock -m 007 wsgi:app
 Restart=always
 [Install]

@@ -31,7 +31,6 @@ def emotion_personal_data():
     respondent_id = session.get('respondent_id')
     if Person.query.get(respondent_id):
         session['second_status'] = True
-    print(session['second_status'])
     surname = request.form.get('surname')
     name = request.form.get('name')
     second_name = request.form.get('second_name')
@@ -82,7 +81,10 @@ def emotion_data_1():
         db.session.add(info_entry)
         db.session.commit()
         session['respondent_id'] = info_entry.id
-    return redirect(url_for('emotion_routes.questionnaire', page_id='emotion_data_2'))
+    return redirect(
+        url_for(
+            'emotion_routes.questionnaire',
+            page_id='emotion_data_2'))
 
 
 @emotion_routes.route('/emotion_data_2', methods=['POST'])
@@ -99,7 +101,10 @@ def emotion_data_2():
         db.session.add(info_entry)
         db.session.commit()
         session['respondent_id'] = info_entry.id
-    return redirect(url_for('emotion_routes.questionnaire', page_id='emotion_data_3'))
+    return redirect(
+        url_for(
+            'emotion_routes.questionnaire',
+            page_id='emotion_data_3'))
 
 
 @emotion_routes.route('/emotion_data_3', methods=['POST'])
@@ -121,14 +126,17 @@ def emotion_data_3():
             add_user.this = school_definition
         db.session.commit()
     else:
-        info_entry = Emotions_main(words_noun = noun,
-                                   words_verb = verb,
-                                   words_pron = pronoun,
-                                   this = school_definition)
+        info_entry = Emotions_main(words_noun=noun,
+                                   words_verb=verb,
+                                   words_pron=pronoun,
+                                   this=school_definition)
         db.session.add(info_entry)
         db.session.commit()
         session['respondent_id'] = info_entry.id
-    return redirect(url_for('emotion_routes.questionnaire', page_id='emotion_data_4'))
+    return redirect(
+        url_for(
+            'emotion_routes.questionnaire',
+            page_id='emotion_data_4'))
 
 
 @emotion_routes.route('/emotion_data_4', methods=['POST'])

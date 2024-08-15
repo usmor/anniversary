@@ -2,11 +2,7 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-from dotenv import load_dotenv
 from app import create_app
-
-
-load_dotenv()
 
 
 def setup_logging(app):

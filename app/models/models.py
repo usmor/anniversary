@@ -65,6 +65,7 @@ class Stages(db.Model):
     pers_id = db.Column(db.Integer, db.ForeignKey("Person.id"), nullable=False)
     year = db.Column(db.Integer, nullable=True)
     stage = db.Column(db.String, nullable=True)
+    city = db.Column(db.String, nullable=True)
 
 
 class CurrentAddresses(db.Model):

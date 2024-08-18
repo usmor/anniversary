@@ -426,10 +426,12 @@ def internships_data():
     for section in sections:
         stage_name = request.form.get(f'intern_place_{section}')
         stage_year = request.form.get(f'intern_year_{section}')
+        stage_city = request.form.get(f'intern_location_{section}')
 
         new_stage = Stages(pers_id=respondent_id,
                            year=stage_year or None,
-                           stage=stage_name or None)
+                           stage=stage_name or None,
+                           city=stage_city or None)
         db.session.add(new_stage)
 
     db.session.commit()

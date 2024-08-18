@@ -29,14 +29,14 @@
                         <input type="text" class="form-control" name="bach_curator_1" id="bach_curator_1"
                             placeholder="Петров Петр Петрович">
                     </div>
-                    <button type="button" class="btn" onclick="removeSection(this)">Удалить бакалавриат</button>
+                    <button type="button" class="btn" onclick="removeSection(this)">Удалить запись</button>
                 </div>
             </div>
 
             <div class="text-center">
                 <button class="btn btn-secondary" onclick="window.history.back(); return false;">Предыдущая
                     страница</button>
-                <button type="button" class="btn" onclick="addSection()">Добавить бакалавриат</button>
+                <button type="button" class="btn" onclick="addSection()">Добавить запись</button>
                 <button type="submit" class="btn">Следующая страница</button>
             </div>
         </form>
@@ -66,7 +66,7 @@
                     <label for="bach_curator_${sectionCount}" style="font-family:georgia">ФИО научного руководителя дипломной работы:</label>
                     <input type="text" class="form-control" name="bach_curator_${sectionCount}" id="bach_curator_${sectionCount}" placeholder="Петров Петр Петрович">
                 </div>
-                <button type="button" class="btn" onclick="removeSection(this)">Удалить бакалавриат</button>
+                <button type="button" class="btn" onclick="removeSection(this)">Удалить запись</button>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', sectionHTML);

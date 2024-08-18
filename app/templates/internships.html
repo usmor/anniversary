@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Анкета{% endblock %}
+{% block title %}Люди ШЛ{% endblock %}
 
 {% block content %}
 
@@ -12,8 +12,12 @@
             <div id="sections-container">
                 <div class="section">
                     <div class="form-group">
+                        <label for="intern_location_1" style="font-family:georgia">Укажите город:</label>
+                        <input type="text" class="form-control" name="intern_location_1" id="intern_location_1" placeholder="Москва">
+                    </div>
+                    <div class="form-group">
                         <label for="intern_place_1" style="font-family:georgia">Укажите место:</label>
-                        <input type="text" class="form-control" name="intern_place_1" id="intern_place_1" placeholder="практика в Яндексе">
+                        <input type="text" class="form-control" name="intern_place_1" id="intern_place_1" placeholder="Яндекс">
                     </div>
                     <div class="form-group">
                         <label for="intern_year_1" style="font-family:georgia">Укажите год:</label>
@@ -41,8 +45,12 @@
         const sectionHTML = `
             <div class="section">
                 <div class="form-group">
+                        <label for="intern_location_${sectionCount}" style="font-family:georgia">Укажите город:</label>
+                        <input type="text" class="form-control" name="intern_location_${sectionCount}" id="intern_location_${sectionCount}" placeholder="Москва">
+                    </div>
+                <div class="form-group">
                     <label for="intern_place_${sectionCount}" style="font-family:georgia">Укажите место:</label>
-                    <input type="text" class="form-control" name="intern_place_${sectionCount}" id="intern_place_${sectionCount}" placeholder="практика в Яндексе">
+                    <input type="text" class="form-control" name="intern_place_${sectionCount}" id="intern_place_${sectionCount}" placeholder="Яндекс">
                 </div>
                 <div class="form-group">
                     <label for="intern_year_${sectionCount}" style="font-family:georgia">Укажите год:</label>

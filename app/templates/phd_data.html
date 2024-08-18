@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Анкета{% endblock %}
+{% block title %}Люди ШЛ{% endblock %}
 
 {% block content %}
 
@@ -29,13 +29,13 @@
                         <input type="text" class="form-control" name="phd_curator_1" id="phd_curator_1"
                             placeholder="Петров Петр Петрович">
                     </div>
-                    <button type="button" class="btn" onclick="removeSection(this)">Удалить аспирантуру</button>
+                    <button type="button" class="btn" onclick="removeSection(this)">Удалить запись</button>
                 </div>
             </div>
             <div class="text-center">
                 <button class="btn btn-secondary" onclick="window.history.back(); return false;">Предыдущая
                     страница</button>
-                <button type="button" class="btn" onclick="addSection()">Добавить аспирантуру</button>
+                <button type="button" class="btn" onclick="addSection()">Добавить запись</button>
                 <button type="submit" class="btn">Следующая страница</button>
             </div>
         </form>
@@ -64,7 +64,7 @@
                     <label for="phd_curator_${sectionCount}" style="font-family:georgia">ФИО научного руководителя кандидатской диссертации:</label>
                     <input type="text" class="form-control" name="phd_curator_${sectionCount}" id="phd_curator_${sectionCount}" placeholder="Петров Петр Петрович">
                 </div>
-                <button type="button" class="btn" onclick="removeSection(this)">Удалить аспирантуру</button>
+                <button type="button" class="btn" onclick="removeSection(this)">Удалить запись</button>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', sectionHTML);
